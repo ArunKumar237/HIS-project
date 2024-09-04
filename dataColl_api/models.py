@@ -1,0 +1,14 @@
+from django.db import models
+
+# Create your models here.
+
+
+class DC_Cases(models.Model):
+    CASE_NUM = models.CharField(max_length=6,null=True,blank=True)
+    APP_ID = models.CharField(max_length=6)
+    PLAN_ID = models.CharField(max_length=6)
+    
+class DC_Income(models.Model):
+    CASE_NUM = models.ForeignKey(DC_Cases, on_delete=models.CASCADE,null=True,blank=True )
+    EMP_INCOME = models.CharField(max_length=6)
+    PROPERTY_INCOME = models.CharField(max_length=6)
