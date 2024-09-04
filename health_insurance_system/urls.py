@@ -22,12 +22,6 @@ from rest_framework_simplejwt.views import (
 )
 
 
-from rest_framework.routers import DefaultRouter
-from django.urls import include
-
-
-
-
 
 urlpatterns = [
     path('',include('admin_api.urls')),
