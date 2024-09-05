@@ -7,5 +7,5 @@ router.register('plancat',PlanCategoryCRUD)
 router.register('planmat',PlanMasterCRUD)
 
 urlpatterns = [
-    path('api/',include(router.urls)),
+    path('',include(router.urls)),
 ]
