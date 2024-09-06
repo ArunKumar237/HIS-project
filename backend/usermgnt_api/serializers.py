@@ -1,7 +1,10 @@
-from rest_framework import serializers
-from .models import *
+from rest_framework import serializers 
 
-class userDataSerializers(serializers.ModelSerializer):
-    class Meta:
-        fields = '__all__'
-        model = user_data
+class EmailSerializer(serializers.Serializer): 
+    email = serializers.CharField(max_length=64)
+
+
+class PasswordResetSerializer(serializers.Serializer):
+    token = serializers.CharField(max_length=300)
+    uid = serializers.CharField(max_length=100)
+    password = serializers.CharField(max_length=100)
