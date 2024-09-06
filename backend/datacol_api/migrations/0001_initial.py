@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DC_Cases',
             fields=[
-                ('CASE_ID', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('CASE_ID', models.AutoField(primary_key=True, serialize=False)),
                 ('CASE_NUM', models.CharField(blank=True, max_length=6, null=True)),
                 ('APP_ID', models.CharField(max_length=6)),
                 ('PLAN_ID', models.CharField(max_length=6)),
@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DC_Income',
             fields=[
-                ('INCOME_ID', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('INCOME_ID', models.AutoField(primary_key=True, serialize=False)),
                 ('EMP_INCOME', models.CharField(max_length=6)),
                 ('PROPERTY_INCOME', models.CharField(max_length=6)),
                 ('CASE_NUM', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='datacol_api.dc_cases')),
