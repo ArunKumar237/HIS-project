@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'admin_api',
     'datacol_api',
+    'appreg_api',
+    'correspondence_api',
+    'usermgnt_api',
 ]
 
 MIDDLEWARE = [
