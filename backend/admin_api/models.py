@@ -19,3 +19,18 @@ class PlanMaster(models.Model):
     UPDATE_DATE	= models.DateField(auto_now=True)
     CREATED_BY = models.CharField(max_length=64)
     UPDATED_BY = models.CharField(max_length=64)
+
+class CaseWorkerAcct(models.Model):
+    ACC_ID	= models.AutoField(primary_key=True)
+    FULLNAME = models.CharField(max_length=64)
+    EMAIL = models.CharField(max_length=64)
+    PWD = models.CharField(max_length=64)
+    PHNO = models.IntegerField()
+    GENDER = models.CharField(max_length=6)
+    SSN = models.IntegerField()
+    DOB = models.DateField()
+    ACTIVE_SW = models.CharField(max_length=64)
+    CREATE_DATE = models.DateField(auto_now_add=True)
+    UPDATE_DATE	= models.DateField(auto_now=True)
+    CREATED_BY = models.CharField(max_length=64)
+    UPDATED_BY = models.CharField(max_length=64)

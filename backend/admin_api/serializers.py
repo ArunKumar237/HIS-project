@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import PlanCategory, PlanMaster
+from .models import PlanCategory, PlanMaster, CaseWorkerAcct
 
 class PlanCategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,4 +9,9 @@ class PlanCategorySerializer(serializers.ModelSerializer):
 class PlanMasterSerializer(serializers.ModelSerializer):
     class Meta:
         model=PlanMaster
+        fields='__all__'
+        
+class CaseWorkerAcctSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=CaseWorkerAcct
         fields='__all__'
