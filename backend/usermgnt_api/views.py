@@ -5,7 +5,6 @@ from django.utils.http import urlsafe_base64_decode,urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
 from rest_framework import viewsets
-<<<<<<< HEAD
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import UntypedToken, TokenError, RefreshToken
@@ -91,14 +90,3 @@ class PasswordResetConfirmView(viewsets.ViewSet):
             except (User.DoesNotExist, ValidationError, TokenError):
                 return Response({'error': 'Invalid token or user does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors,status=400)
-=======
-from .models import *
-from .serializers import *
-from rest_framework.permissions import DjangoModelPermissions
-# Create your views here.
-
-class userDataModelViewSet(viewsets.ModelViewSet):
-    queryset = user_data.objects.all()
-    serializer_class = userDataSerializers
-    permission_classes = [DjangoModelPermissions]
->>>>>>> ba5ea516247b9a1a66996c8e8f08b732b33f5dac
