@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework',
     'admin_api',
+    'eligibledet_api',
     'datacol_api',
     'appreg_api',
     'correspondence_api',

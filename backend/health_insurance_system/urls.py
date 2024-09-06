@@ -1,3 +1,4 @@
+
 """
 URL configuration for health_insurance_system project.
 
@@ -30,6 +31,6 @@ urlpatterns = [
     path('api/Dc/',include('datacol_api.urls')),
     path('api/Ar/',include('appreg_api.urls')),
     path('api/cor/',include('correspondence_api.urls')),
-    path('api/user/',include('usermgnt_api.urls'))
-    
+    path('api/user/',include('usermgnt_api.urls')),
+    path('api/eligible/',include('eligibledet_api.urls')),    
 ]
