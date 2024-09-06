@@ -139,3 +139,19 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
+
+# Email settings
+import environ
+import os
+
+# Initialize environment variables
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Replace with your email provider's SMTP server
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True  # Use TLS for secure connection
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')  # Your email address
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')  # Your email password or app password
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL') # Your email address

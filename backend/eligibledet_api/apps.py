@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class UsermgntApiConfig(AppConfig):
+class EligibledetApiConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'usermgnt_api'
+    name = 'eligibledet_api'
