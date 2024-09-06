@@ -9,6 +9,8 @@ from .views import *
 router = DefaultRouter()
 router.register('Dc_cases',DcCasesModelViews,basename = 'DC_case')
 router.register('Dc_income',DcIncomeModelView,basename = 'DC_income')
+router.register('Dc_children',DcChildrensModelView,basename='DC_children')
+router.register('Dc_education',DcEducationsModelView,basename='DC_education')
 
 
 
