@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework',
     'admin_api',
+    'eligibledet_api',
+    
 ]
 
 MIDDLEWARE = [
