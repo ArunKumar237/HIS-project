@@ -40,15 +40,11 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework',
     'admin_api',
-<<<<<<< HEAD:health_insurance_system/settings.py
     'eligibledet_api',
-    
-=======
     'datacol_api',
     'appreg_api',
     'correspondence_api',
     'usermgnt_api',
->>>>>>> 46b35893d5de4cc54f4146d68e6159ae6cd9f966:backend/health_insurance_system/settings.py
 ]
 
 MIDDLEWARE = [
