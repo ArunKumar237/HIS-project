@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework',
     'admin_api',
+    'eligibledet_api',
     'datacol_api',
     'appreg_api',
     'correspondence_api',
@@ -138,6 +139,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
+<<<<<<< HEAD
 
 
 
@@ -156,3 +158,5 @@ EMAIL_USE_TLS = True  # Use TLS for secure connection
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')  # Your email address
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')  # Your email password or app password
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL') # Your email address
+=======
+>>>>>>> ba5ea516247b9a1a66996c8e8f08b732b33f5dac
