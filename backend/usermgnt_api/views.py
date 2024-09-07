@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework_simplejwt.tokens import UntypedToken, TokenError, RefreshToken
+from rest_framework_simplejwt.tokens import UntypedToken, TokenError, RefreshToken, AccessToken
 from rest_framework.exceptions import ValidationError
 from .serializers import EmailSerializer, PasswordResetSerializer
 from rest_framework.permissions import AllowAny
@@ -78,6 +78,9 @@ class PasswordResetConfirmView(viewsets.ViewSet):
                 # Decode the user ID
                 uid = urlsafe_base64_decode(uidb64).decode()
                 user = User.objects.get(pk=uid)
+
+                if user.is_staff == False:
+                    return Response({'error': 'first Unlock your Account at our portal'}, status=status.HTTP_400_BAD_REQUEST)
                 
                 # Validate the token
                 UntypedToken(token)  # This raises an exception if the token is invalid or expired

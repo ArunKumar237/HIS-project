@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework_simplejwt',
     'rest_framework',
+    'corsheaders',
     'admin_api',
     'eligibledet_api',
     'datacol_api',
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -155,3 +157,37 @@ EMAIL_USE_TLS = True  # Use TLS for secure connection
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')  # Your email address
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')  # Your email password or app password
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL') # Your email address
+
+
+from datetime import timedelta
+SIMPLE_JWT = {
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # Replace with your frontend URL
+    "http://127.0.0.1:5173",  # Another common localhost URL
+]
+
+# Allow credentials (e.g., cookies, authorization headers)
+CORS_ALLOW_CREDENTIALS = True
+
+# Allow specific HTTP methods
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS',
+]
+
+# Allow specific headers
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'authorization',
+    'x-csrftoken',
+]
