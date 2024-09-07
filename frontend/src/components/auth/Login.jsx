@@ -1,60 +1,53 @@
-import React from 'react'
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import { useState } from 'react';
-import axios from 'axios'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const Login = () => {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    });
+function LoginForm() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        console.log('checking', e.target)
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        console.log(event.target.username.value, event.target.password.value)
+        console.log(username, password)
         try {
-            const response = await axios.post('https://127.0.0.1:8000/api/usermgnt/', formData);
-            console.log('Form submitted successfully:', response.data);
+            const response = await axios.post('http://localhost:8000/api/token/', {
+                username,
+                password
+            });
+            localStorage.setItem('access_token', response.data.access);
+            localStorage.setItem('refresh_token', response.data.refresh);
+            // Redirect or update UI after successful login
+            navigate('/cases')
         } catch (error) {
-            console.error('Error submitting form:', error);
+            setError('Login failed. Please check your credentials.');
         }
     };
 
     return (
-        <Container>
-            <Row className="justify-content-md-center">
-                <Col sm={6}>
-                    <div className='border border-1 p-5 mt-5'>
-                        <h3 className='d-flex justify-content-center'>Login</h3>
-                        <Form onSubmit={handleSubmit}>
-                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                <Form.Label>Email address</Form.Label>
-                                <Form.Control type="email" placeholder="Enter email" name='email' value={formData.email} onChange={handleChange} />
-                            </Form.Group>
-
-                            <Form.Group className="mb-3" controlId="formBasicPassword">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" placeholder="Password" name='password' value={formData.password} onChange={handleChange} />
-                            </Form.Group>
-                            <Button variant="primary" type="submit">
-                                Submit
-                            </Button>
-                        </Form>
-                    </div>
-                </Col>
-            </Row>
-        </Container>
-    )
+        <form onSubmit={handleSubmit}>
+            <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Username"
+                name='username'
+                required
+            />
+            <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                name='password'
+                required
+            />
+            <button type="submit">Login</button>
+            {error && <p>{error}</p>}
+        </form>
+    );
 }
 
-export default Login
+export default LoginForm;
