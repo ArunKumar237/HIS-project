@@ -25,11 +25,11 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Update the other model field (e.g., CaseWorkerAcct)
         try:
             caseworker = CaseWorkerAcct.objects.get(USERNAME=user)
-            if caseworker.ACTIVE_SW:  # Check if the field needs to be updated
-                caseworker.ACTIVE_SW = True  # Set the new value
-                caseworker.save()
-                user.is_staff = True
+            if (caseworker.ACTIVE_SW == False) and (user.is_staff == False):  # Check if the field needs to be updated
+                token['redirect_to_unlock'] = True  # Add a custom field to the token
+            else:
+                token['redirect_to_unlock'] = False
         except CaseWorkerAcct.DoesNotExist:
-            pass  # Handle case if the record does not exist
+            token['redirect_to_unlock'] = False
         
         return token
