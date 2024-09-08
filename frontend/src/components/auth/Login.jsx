@@ -1,53 +1,78 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react'
 import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
+import { decodeJwt } from 'jose';
 
-function LoginForm() {
+
+// Usage in a component
+const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        console.log(event.target.username.value, event.target.password.value)
-        console.log(username, password)
+    const loginUser = async (username, password) => {
         try {
-            const response = await axios.post('http://localhost:8000/api/token/', {
-                username,
-                password
-            });
-            localStorage.setItem('access_token', response.data.access);
-            localStorage.setItem('refresh_token', response.data.refresh);
-            // Redirect or update UI after successful login
-            navigate('/cases')
+            const response = await axios.post('http://127.0.0.1:8000/api/token/', username, password);
+            const { access, refresh } = response.data;
+
+            const redirect_to_unlock = decodeJwt(access).redirect_to_unlock
+            console.log('redirect:', redirect_to_unlock)
+
+            localStorage.setItem('access_token', access);
+            localStorage.setItem('refresh_token', refresh);
+
+            if (redirect_to_unlock) {
+                // Redirect to unlock page if the flag is true
+                navigate('/unlock');
+            } else {
+                // Redirect to the default page
+                navigate('/dashboard');
+            }
         } catch (error) {
-            setError('Login failed. Please check your credentials.');
+            setError('Error logging in:', error);
         }
     };
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Username"
-                name='username'
-                required
-            />
-            <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                name='password'
-                required
-            />
-            <button type="submit">Login</button>
-            {error && <p>{error}</p>}
-        </form>
-    );
-}
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        loginUser({ username, password });
+    };
 
-export default LoginForm;
+    return (
+        <div>
+            <h2>Login</h2>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label htmlFor="username">Username</label>
+                    <input
+                        type="text"
+                        id="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        name='username'
+                        required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        name='password'
+                        required
+                    />
+                </div>
+                <div>
+                    <Link to={'/forgot'}>Forgot password</Link>
+                </div>
+                {error && <div>{error}</div>}
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    );
+};
+
+export default Login
