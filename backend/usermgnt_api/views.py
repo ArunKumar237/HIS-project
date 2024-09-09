@@ -74,6 +74,7 @@ class NewUserChangePasswordView(viewsets.ViewSet):
 
 class PasswordResetRequestView(viewsets.ViewSet):
     permission_classes = [AllowAny]
+    authentication_classes = []
 
     def get_queryset(self):
         # This queryset won't be directly used in the reset logic, 
@@ -102,7 +103,8 @@ class PasswordResetRequestView(viewsets.ViewSet):
 
 
 class PasswordResetConfirmView(viewsets.ViewSet):
-    permission_classes = [AllowAny]
+    permission_classes = [AllowAny,]
+    authentication_classes = []
 
     def get_queryset(self):
         # This queryset won't be directly used in the reset logic, 
@@ -142,7 +144,14 @@ class PasswordResetConfirmView(viewsets.ViewSet):
                 # Set the new password
                 user.set_password(new_password)
                 user.save()
-                
+                print('---->',user.email, user.username)
+                send_mail(
+                    'Password Reset Successfull',
+                    f'Your password reset was successful your new credentials are below\nusername:{user.username}\nnew password:{new_password}',
+                    env('EMAIL_HOST_USER'), #from
+                    [user.email], #to
+                    fail_silently=False,
+                )
                 return Response({'message': 'Password has been reset successfully.'}, status=status.HTTP_200_OK)
             except (User.DoesNotExist, ValidationError, TokenError):
                 return Response({'error': 'Invalid token or user does not exist.'}, status=status.HTTP_400_BAD_REQUEST)

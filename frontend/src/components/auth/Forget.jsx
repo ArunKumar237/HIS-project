@@ -23,11 +23,25 @@ const Forget = () => {
         e.preventDefault();
 
         const { email } = formData;
+        console.log('email:', email)
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/user/change-password/', { email });
+            const response = await axios.post('http://127.0.0.1:8000/api/user/change-password/', { email }, { headers: { 'Content-Type': 'application/json' } });
             setMessage('Form submitted successfully, reset password sent to your registered mail');
         } catch (error) {
-            setError('Error submitting form:', error);
+            if (error.response) {
+
+                // Server responded with a status other than 200 range
+                console.error('Error response data:', error.response.data);
+                console.error('Error response status:', error.response.status);
+                console.error('Error response headers:', error.response.headers);
+            } else if (error.request) {
+                // Request was made but no response received
+                console.error('Error request:', error.request);
+            } else {
+                // Something else happened in setting up the request
+                console.error('Error message:', error.message);
+            }
+            // setError('Error submitting form:', error);
         }
     };
 
