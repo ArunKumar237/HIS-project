@@ -1,0 +1,51 @@
+/* Default background color for inactive items */
+.hover-bg {
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease;
+}
+
+/* Active background color */
+.active-bg {
+    background-color: #80808032;
+    transition: background-color 0.3s ease;
+}
+
+/* Submenu styles */
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+}
+
+/* Visible submenu */
+.submenu.visible {
+    max-height: 300px;
+    /* Adjust based on content */
+    opacity: 1;
+}
+
+ul.submenu li {
+    background-color: #e9ecef;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    border-top: 1px solid rgba(0, 0, 0, 0.297);
+}
+
+/* Hover effect for submenu items */
+ul.submenu li:hover {
+    background-color: #dee2e6;
+}
+
+.list-item {
+    position: relative;
+}
+
+.list-item .hover-bg {
+    transition: background-color 0.3s ease;
+}
+
+.list-item:hover .hover-bg {
+    background-color: #8080805c;
+    /* Change to your desired hover color */
+}
