@@ -12,6 +12,7 @@ from rest_framework_simplejwt.tokens import UntypedToken, TokenError, RefreshTok
 from rest_framework.exceptions import ValidationError
 from .serializers import EmailSerializer, PasswordResetSerializer, NewUserChangePasswordSerializer
 from rest_framework.permissions import AllowAny
+from admin_api.models import CaseWorkerAcct
 
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -57,6 +58,11 @@ class NewUserChangePasswordView(viewsets.ViewSet):
                     # Changing staff status
                     if user.is_staff == False:
                         user.is_staff = True
+
+                        #updating password in caseworkeracct
+                        worker = CaseWorkerAcct.objects.get(USERNAME=user.username)
+                        worker.ACTIVE_SW = True
+                        worker.save()
                     
                     # Set the new password
                     user.set_password(new_password)
@@ -144,6 +150,12 @@ class PasswordResetConfirmView(viewsets.ViewSet):
                 # Set the new password
                 user.set_password(new_password)
                 user.save()
+
+                #updating password in caseworkeracct
+                worker = CaseWorkerAcct.objects.get(USERNAME=user.username)
+                worker.PWD = new_password
+                worker.save()
+
                 print('---->',user.email, user.username)
                 send_mail(
                     'Password Reset Successfull',
