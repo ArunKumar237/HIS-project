@@ -3,12 +3,10 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { decodeJwt } from 'jose';
 import Heading from './Heading';
-import { welcomeContext } from '../../App';
 
 
 // Usage in a component
 const Login = () => {
-    const welcome = useContext(welcomeContext)
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -39,7 +37,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        welcome.setWelcomeName(username);
+        localStorage.setItem('username', username)
         loginUser({ username, password });
     };
 

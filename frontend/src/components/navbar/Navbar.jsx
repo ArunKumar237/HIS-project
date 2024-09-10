@@ -1,11 +1,9 @@
-import React, { useState, Fragment, useContext } from 'react';
+import React, { useState, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { welcomeContext } from '../../App';
 import './Navbar.css';
 
 const Navbar = () => {
-    const welcome = useContext(welcomeContext)
     const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -39,7 +37,7 @@ const Navbar = () => {
                         <a onClick={handleClick} className='text-decoration-none text-black'>Welcome to Arun Insurance Agency</a>
                     </p>
                     <div className='d-flex gap-2 align-items-center'>
-                        <p style={{ fontSize: "1.4rem" }} className='mt-2'>Welcome! {welcome.welcomeName}</p>
+                        <p style={{ fontSize: "1.4rem" }} className='mt-2'>Welcome! {localStorage.getItem('username')}</p>
                         <a
                             href="#"
                             onClick={toggleDropdown}
