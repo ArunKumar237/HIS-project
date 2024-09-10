@@ -6,7 +6,7 @@
 
 /* Active background color */
 .active-bg {
-    background-color: #80808032;
+    background-color: #E6E6E6;
     transition: background-color 0.3s ease-in-out;
 }
 
@@ -34,7 +34,7 @@ ul.submenu li {
 
 /* Hover effect for submenu items */
 ul.submenu li:hover {
-    background-color: #dee2e6;
+    background-color: #808080aa;
 }
 
 .list-item {
