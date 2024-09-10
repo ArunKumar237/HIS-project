@@ -7,7 +7,7 @@
 /* Active background color */
 .active-bg {
     background-color: #80808032;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease-in-out;
 }
 
 /* Submenu styles */
@@ -28,7 +28,7 @@
 ul.submenu li {
     background-color: #e9ecef;
     text-align: center;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease-in-out;
     border-top: 1px solid rgba(0, 0, 0, 0.297);
 }
 
@@ -42,7 +42,7 @@ ul.submenu li:hover {
 }
 
 .list-item .hover-bg {
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease-in-out;
 }
 
 .list-item:hover .hover-bg {

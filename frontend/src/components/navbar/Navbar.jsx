@@ -1,9 +1,11 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { welcomeContext } from '../../App';
 import './Navbar.css';
 
 const Navbar = () => {
+    const welcome = useContext(welcomeContext)
     const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -24,17 +26,16 @@ const Navbar = () => {
     return (
         <Fragment>
             <nav className="navbar navbar-expand-lg sticky-top bg-white m-0 p-0">
-                <div style={{ height: "4rem" }} className="container-fluid px-5 border border-2">
+                <div style={{ height: "4rem" }} className="container-fluid px-5 border-bottom d-flex justify-content-between">
                     <p className='h2 montserrat-font'>
                         <a href="" className='text-decoration-none text-black'>AIA</a>
                     </p>
                     <p className='h2 caveat-font'>
                         <a href="" className='text-decoration-none text-black'>Welcome to Arun Insurance Agency</a>
                     </p>
-                    <div className='d-flex align-items-center'>
-                        <p style={{ fontSize: "1.4rem" }} className='mt-2'>Welcome! Username</p>
+                    <div className='d-flex gap-2 align-items-center'>
+                        <p style={{ fontSize: "1.4rem" }} className='mt-2'>Welcome! {welcome.welcomeName}</p>
                         <a
-                            className="navbar-brand ms-md-4 m-0"
                             href="#"
                             onClick={toggleDropdown}
                         >
