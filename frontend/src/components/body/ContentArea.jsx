@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
+import './ContentArea.css'
+import CreateAccounts from './admin/CreateAccounts';
 
 const ContentArea = () => {
+
+
     return (
-        <>
-            ContentAre
-        </>
+        <div className="app">
+            <Sidebar onSelectMenu={handleMenuSelection} />
+            <div className="content">
+                {renderContent()}
+            </div>
+        </div>
     )
 }
 
