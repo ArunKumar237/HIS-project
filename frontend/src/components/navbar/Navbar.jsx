@@ -21,20 +21,24 @@ const Navbar = () => {
         navigate('/');
     };
 
+    const handleClick = (event) => {
+        event.preventDefault();  // Prevents the default action (page reload/navigation)
+        console.log("Link click prevented!");
+    };
+
     return (
         <Fragment>
             <nav className="navbar navbar-expand-lg sticky-top bg-white m-0 p-0">
-                <div style={{ height: "4rem" }} className="container-fluid px-5 border border-2">
+                <div style={{ height: "4rem" }} className="container-fluid px-5 border-bottom d-flex justify-content-between">
                     <p className='h2 montserrat-font'>
-                        <a href="" className='text-decoration-none text-black'>AIA</a>
+                        <a onClick={handleClick} className='text-decoration-none text-black'>AIA</a>
                     </p>
                     <p className='h2 caveat-font'>
-                        <a href="" className='text-decoration-none text-black'>Welcome to Arun Insurance Agency</a>
+                        <a onClick={handleClick} className='text-decoration-none text-black'>Welcome to Arun Insurance Agency</a>
                     </p>
-                    <div className='d-flex align-items-center'>
-                        <p style={{ fontSize: "1.4rem" }} className='mt-2'>Welcome! Username</p>
+                    <div className='d-flex gap-2 align-items-center'>
+                        <p style={{ fontSize: "1.4rem" }} className='mt-2'>Welcome! {localStorage.getItem('username')}</p>
                         <a
-                            className="navbar-brand ms-md-4 m-0"
                             href="#"
                             onClick={toggleDropdown}
                         >

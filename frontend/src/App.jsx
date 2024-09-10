@@ -1,4 +1,3 @@
-// import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './components/auth/Login'
 import Cases from './components/data_col/Cases';
@@ -10,6 +9,8 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Home from "./components/homepage/Home";
 import './App.css'
 import { Fragment } from "react";
+
+
 function App() {
   return (
     <Fragment>

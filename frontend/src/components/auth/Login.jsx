@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { decodeJwt } from 'jose';
@@ -37,6 +37,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        localStorage.setItem('username', username)
         loginUser({ username, password });
     };
 
