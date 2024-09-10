@@ -32,7 +32,7 @@ const Navbar = () => {
                         <a href="" className='text-decoration-none text-black'>Welcome to Arun Insurance Agency</a>
                     </p>
                     <div className='d-flex align-items-center'>
-                        <p style={{ fontSize: "1.4rem" }} className='mt-2'>Username</p>
+                        <p style={{ fontSize: "1.4rem" }} className='mt-2'>Welcome! Username</p>
                         <a
                             className="navbar-brand ms-md-4 m-0"
                             href="#"

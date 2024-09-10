@@ -16,16 +16,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />}></Route>
-          <Route path="/home" element={<Home />}></Route>
-          <Route path="/cases" element={<Cases />}></Route>
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>}></Route>
+          <Route path="/cases" element={<ProtectedRoute><Cases /></ProtectedRoute>}></Route>
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/unlock" element={<Unlock />}></Route>
           <Route path="/forgot" element={<Forget />}></Route>
           <Route path="/reset" element={<Reset />}></Route>
