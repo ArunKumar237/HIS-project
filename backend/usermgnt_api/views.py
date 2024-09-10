@@ -21,7 +21,8 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 
 class NewUserChangePasswordView(viewsets.ViewSet):
-    permission_classes = [AllowAny]
+
+    print('Entered in view')
 
     def get_queryset(self):
         # This queryset won't be directly used in the reset logic, 
@@ -62,13 +63,23 @@ class NewUserChangePasswordView(viewsets.ViewSet):
                         #updating password in caseworkeracct
                         worker = CaseWorkerAcct.objects.get(USERNAME=user.username)
                         worker.ACTIVE_SW = True
-                        worker.save()
+                        
                     
                     # Set the new password
                     user.set_password(new_password)
                     user.save()
+                    worker.PWD = new_password
+                    worker.save()
 
-                    return Response({'message': 'Password has been reset successfully.'}, status=status.HTTP_200_OK)
+                    send_mail(
+                        'Account Unlocked',
+                        f'Your account is UNLOCKED successfully. Your new login credentials are below:\nusername:{user.username}\npassword:{new_password}',
+                        env('EMAIL_HOST_USER'), #from
+                        [user.email], #to
+                        fail_silently=False,
+                    )
+
+                    return Response({'message': 'Your account is UNLOCKED the new Password has been reset successfully.'}, status=status.HTTP_200_OK)
                 else:
                     return Response({'error': 'Invalid credentials.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -76,7 +87,6 @@ class NewUserChangePasswordView(viewsets.ViewSet):
                 return Response({'error': 'Invalid token or user does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors,status=400)
 
-    
 
 class PasswordResetRequestView(viewsets.ViewSet):
     permission_classes = [AllowAny]
