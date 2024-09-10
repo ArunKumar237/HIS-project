@@ -18,7 +18,7 @@ const Login = () => {
             const { access, refresh } = response.data;
 
             const redirect_to_unlock = decodeJwt(access).redirect_to_unlock
-            console.log('redirect:', redirect_to_unlock)
+            console.log('redirect:', redirect_to_unlock, 'userid:', decodeJwt(access).user_id)
 
             localStorage.setItem('access_token', access);
             localStorage.setItem('refresh_token', refresh);

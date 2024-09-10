@@ -38,15 +38,27 @@ const Unlock = () => {
             const response = await axios.post('http://127.0.0.1:8000/api/user/unlock-account/', {
                 username,
                 password,
-                new_password,
-                token
+                new_password
             }, {
-                headers: {}
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
             });
             console.log('Form submitted successfully:', response.data);
             navigate('/');
         } catch (error) {
-            setError('Error submitting form:', error);
+            if (error.response) {
+
+                // Server responded with a status other than 200 range
+                console.error('Error response data:', error.response.data);
+                console.error('Error response status:', error.response.status);
+                console.error('Error response headers:', error.response.headers);
+            } else if (error.request) {
+                // Request was made but no response received
+                console.error('Error request:', error.request);
+            } else {
+                // Something else happened in setting up the request
+                console.error('Error message:', error.message);
+            }
+            // setError('Error submitting form:', error);
         }
     };
 
