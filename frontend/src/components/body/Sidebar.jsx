@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Sidebar.css';
 
-const Sidebar = () => {
+const Sidebar = ({ onSelectMenu }) => {
     const [activeIndex, setActiveIndex] = useState(null);
     const [submenuVisible, setSubmenuVisible] = useState(false);
 
@@ -61,7 +61,7 @@ const Sidebar = () => {
     };
 
     return (
-        <ul className='list-unstyled d-flex flex-column w-100 mb-5 bg-light'>
+        <ul className='list-unstyled d-flex flex-column w-100 mb-5 bg-light shadow-sm'>
             {menus.map((item, index) => (
                 <li key={index} className='list-item'>
                     <a
@@ -78,7 +78,7 @@ const Sidebar = () => {
                     {activeIndex === index && item.submenu.length > 0 && (
                         <ul className={`submenu ${submenuVisible ? 'visible' : ''} list-unstyled`}>
                             {item.submenu.map((submenuItem, subIndex) => (
-                                <a href='#' style={{ fontSize: "1rem" }} className='text-decoration-none text-black'><li key={subIndex} className='p-2 new-li'>{submenuItem}</li></a>
+                                <div onClick={() => onSelectMenu(submenuItem.trim().replaceAll(' ', ''))} style={{ fontSize: "1rem", cursor: "pointer" }} className='text-decoration-none text-black' key={subIndex}><li className='p-2 new-li'>{submenuItem}</li></div>
                             ))}
                         </ul>
                     )}
