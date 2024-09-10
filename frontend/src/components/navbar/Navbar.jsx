@@ -1,8 +1,10 @@
 import React, { useState, Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = () => {
+    const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const toggleDropdown = () => {
@@ -11,7 +13,12 @@ const Navbar = () => {
 
     const handleLogout = () => {
         console.log('Logging out...');
-        // Add your logout logic here
+
+        // Remove the JWT token from localStorage
+        localStorage.removeItem('access_token');
+
+        // Redirect to login page
+        navigate('/');
     };
 
     return (
@@ -19,7 +26,10 @@ const Navbar = () => {
             <nav className="navbar navbar-expand-lg sticky-top bg-white m-0 p-0">
                 <div style={{ height: "4rem" }} className="container-fluid px-5 border border-2">
                     <p className='h2 montserrat-font'>
-                        <a href="" className='text-decoration-none text-black'>INSURANCE</a>
+                        <a href="" className='text-decoration-none text-black'>AIA</a>
+                    </p>
+                    <p className='h2 caveat-font'>
+                        <a href="" className='text-decoration-none text-black'>Welcome to Arun Insurance Agency</a>
                     </p>
                     <div className='d-flex align-items-center'>
                         <p style={{ fontSize: "1.4rem" }} className='mt-2'>Username</p>

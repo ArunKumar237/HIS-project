@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios'
+import Heading from './Heading';
 
 const Forget = () => {
     const navigate = useNavigate();
@@ -46,24 +47,29 @@ const Forget = () => {
     };
 
     return (
-        <div>
-            <h2>Get reset link</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="text"
-                        id="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        name="email"
-                        required
-                    />
+        <div style={{ backgroundColor: "#3e5675" }} className="container-fluid min-vh-100">
+            <Heading />
+            <div className="row d-flex justify-content-center">
+                <div style={{ height: "30rem", backgroundColor: "#e3e3e3" }} className="col-6 rounded-4 shadow-lg">
+                    <h3 className='text-center py-5'>Get reset link</h3>
+                    <form onSubmit={handleSubmit} className='border border-1 rounded d-flex flex-column align-items-center justify-content-center gap-3'>
+                        <div className='d-flex gap-2'>
+                            <label htmlFor="email">Email:</label>
+                            <input
+                                type="text"
+                                id="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                name="email"
+                                required
+                            />
+                        </div>
+                        {error && <div>{error}</div>}
+                        <button type="submit" className='px-3 py-1 rounded bg-primary text-white'>Create link</button>
+                        {message && <p>{message}</p>}
+                    </form>
                 </div>
-                {error && <div>{error}</div>}
-                <button type="submit">Create link</button>
-                {message && <p>{message}</p>}
-            </form>
+            </div>
         </div>
     )
 }

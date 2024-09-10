@@ -62,11 +62,13 @@ class NewUserChangePasswordView(viewsets.ViewSet):
                         #updating password in caseworkeracct
                         worker = CaseWorkerAcct.objects.get(USERNAME=user.username)
                         worker.ACTIVE_SW = True
-                        worker.save()
+                        
                     
                     # Set the new password
                     user.set_password(new_password)
                     user.save()
+                    worker.PWD = new_password
+                    worker.save()
 
                     return Response({'message': 'Password has been reset successfully.'}, status=status.HTTP_200_OK)
                 else:

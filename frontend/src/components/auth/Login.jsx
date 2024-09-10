@@ -2,6 +2,7 @@ import { useState } from 'react'
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { decodeJwt } from 'jose';
+import Heading from './Heading';
 
 
 // Usage in a component
@@ -27,7 +28,7 @@ const Login = () => {
                 navigate('/unlock');
             } else {
                 // Redirect to the default page
-                navigate('/dashboard');
+                navigate('/home');
             }
         } catch (error) {
             setError('Error logging in:', error);
@@ -41,36 +42,43 @@ const Login = () => {
 
     return (
         <div>
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="username">Username</label>
-                    <input
-                        type="text"
-                        id="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        name='username'
-                        required
-                    />
+            <div style={{ backgroundColor: "#3e5675" }} className="container-fluid min-vh-100">
+                <Heading />
+                <div className="row d-flex justify-content-center">
+                    <div style={{ height: "30rem", backgroundColor: "#e3e3e3" }} className="col-6 rounded-4 shadow-lg">
+                        <h3 className='text-center py-5'>Login</h3>
+                        <form onSubmit={handleSubmit} className='border border-1 rounded d-flex flex-column align-items-center justify-content-center gap-3'>
+                            <div className='d-flex gap-2'>
+                                <label htmlFor="username">Username:</label>
+                                <input
+                                    type="text"
+                                    id="username"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    name='username'
+                                    required
+                                />
+                            </div>
+                            <div className='d-flex gap-2'>
+                                <label htmlFor="password">&nbsp;Password:</label>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    name='password'
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <Link to={'/forgot'}>Forgot password</Link>
+                            </div>
+                            {error && <div>{error}</div>}
+                            <button type="submit" className='px-3 py-1 rounded bg-primary text-white'>Login</button>
+                        </form>
+                    </div>
                 </div>
-                <div>
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        name='password'
-                        required
-                    />
-                </div>
-                <div>
-                    <Link to={'/forgot'}>Forgot password</Link>
-                </div>
-                {error && <div>{error}</div>}
-                <button type="submit">Login</button>
-            </form>
+            </div>
         </div>
     );
 };
