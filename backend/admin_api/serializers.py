@@ -26,7 +26,10 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         try:
             caseworker = CaseWorkerAcct.objects.get(USERNAME=user)
             if (caseworker.ACTIVE_SW == False) and (user.is_staff == False):  # Check if the field needs to be updated
-                token['redirect_to_unlock'] = True  # Add a custom field to the token
+                if (caseworker.UPDATED_BY == 'admin'):
+                    token['redirect_to_unlock'] = True  # Add a custom field to the token
+                else:
+                    token['redirect_to_unlock'] = False
             else:
                 token['redirect_to_unlock'] = False
         except CaseWorkerAcct.DoesNotExist:
