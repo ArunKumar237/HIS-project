@@ -37,7 +37,7 @@ const Navbar = () => {
                         <a onClick={handleClick} className='text-decoration-none text-black'>Welcome to Arun Insurance Agency</a>
                     </p>
                     <div className='d-flex gap-2 align-items-center'>
-                        <p style={{ fontSize: "1.4rem" }} className='mt-2'>Welcome! {localStorage.getItem('username')}</p>
+                        <p style={{ fontSize: "1.4rem" }} className='mt-2'>Welcome! {localStorage.getItem('username').charAt(0).toUpperCase() + localStorage.getItem('username').slice(1)}</p>
                         <a
                             href="#"
                             onClick={toggleDropdown}
