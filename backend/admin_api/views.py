@@ -69,6 +69,16 @@ class CaseWorkerAcctCRUD(ViewSet):
             return Response('CaseWorker form submitted successfully')
         return Response(serializer.errors,status=400)
 
+    def retrieve(self, request, pk=None):
+        try:
+            account = CaseWorkerAcct.objects.get(pk=pk)
+        except Account.DoesNotExist:
+            return Response({'error': 'Account not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = CaseWorkerAcctSerializer(account)
+        return Response(serializer.data)
+
+
     def update(self, request, pk=None):
         try:
             worker = CaseWorkerAcct.objects.get(pk=pk)
