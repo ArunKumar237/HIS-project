@@ -10,6 +10,7 @@ from rest_framework import status
 # Create your views here.
 
 class appRegModuleModelViewSet(ViewSet):
+    permission_classes = [DjangoModelPermissions]
     def list(self,request):
         queryset = appReg_Module.objects.all()
         serializer = appRegSerializers(queryset,many=True)
@@ -25,6 +26,8 @@ class appRegModuleModelViewSet(ViewSet):
             appReg = appReg_Module.objects.get(pk = pk)
         except appReg_Module.DoesNotExist:
             return Response({'error':'Record Not Found'},status=status.HTTP_404_NOT_FOUND)
+        serializer = appRegSerializers(appReg)
+        return Response(serializer.data)
     def update(self,request,pk=None):
         try:
             appReg = appReg_Module.objects.get(pk=pk)
