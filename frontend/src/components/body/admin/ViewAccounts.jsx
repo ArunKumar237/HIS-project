@@ -1,10 +1,25 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import './ViewAccounts.css'
+import UpdateForm from './UpdateForm';
 
 const ViewAccounts = () => {
     const [Accounts, setAccounts] = useState('');
     const [error, setError] = useState(null);
+    const [worker, setWorker] = useState({
+        ACC_ID: '',
+        USERNAME: '',
+        FULLNAME: '',
+        EMAIL: '',
+        PHNO: '',
+        GENDER: '',
+        SSN: '',
+        DOB: '',
+        ACTIVE_SW: ''
+    });
+    // State to control popup visibility
+    const [showPopup, setShowPopup] = useState(false);
+
 
     useEffect(() => {
         // Define the async function inside useEffect
@@ -22,6 +37,8 @@ const ViewAccounts = () => {
     }, []);
 
     const toggleActiveStatus = async (accountId, isActive) => {
+        const isConfirmed = window.confirm(`Are you sure you want ${isActive ? 'De-Activate' : 'Activate'} account ${accountId}?`);
+        if (!isConfirmed) return;
         try {
             const response = await axios.patch(`http://127.0.0.1:8000/api/plans/casewrkacct/${accountId}/`, { ACTIVE_SW: !isActive }, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
@@ -50,6 +67,8 @@ const ViewAccounts = () => {
     };
 
     const handleDelete = async (accountId) => {
+        const isConfirmed = window.confirm(`Are you sure you want to delete account ${accountId}?`);
+        if (!isConfirmed) return;
         try {
             const response = await axios.delete(`http://127.0.0.1:8000/api/plans/casewrkacct/${accountId}/`, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
@@ -62,6 +81,34 @@ const ViewAccounts = () => {
             setError('Error deleting account', error.response);
         }
     }
+
+
+    // Function to open the popup
+    const handleUpdateClick = async (accountId) => {
+        const isConfirmed = window.confirm(`Are you sure you want to update account ${accountId}?`);
+        if (!isConfirmed) return;
+        try {
+            const response = await axios.get(`http://127.0.0.1:8000/api/plans/casewrkacct/${accountId}/`, {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
+            });
+            setWorker(response.data)
+            console.log('worker', worker)
+            console.log('response data', response.data)
+        } catch (error) {
+            console.error('Error details:', error.response);
+            setError('Error getting account', error.response);
+        }
+        setShowPopup(true);
+    };
+
+    const handleAccountUpdate = (updatedWorker) => {
+        setAccounts((prevAccounts) =>
+            prevAccounts.map((account) =>
+                account.ACC_ID === updatedWorker.ACC_ID ? updatedWorker : account
+            )
+        );
+    };
+
 
     return (
         <>
@@ -101,14 +148,12 @@ const ViewAccounts = () => {
                                                 src={updateImg(worker.ACTIVE_SW)}
                                                 onClick={() => toggleActiveStatus(worker.ACC_ID, worker.ACTIVE_SW)}
                                                 alt="" />
-                                            {/* <img src="https://img.icons8.com/color/20/cancel--v1.png" alt="" />
-                                            <img src="https://img.icons8.com/color/20/ok.png" alt="" /> */}
                                         </td>
                                         <td>
                                             <img
-                                                // style={{ cursor: 'pointer' }}
+                                                style={{ cursor: 'pointer' }}
                                                 src="https://img.icons8.com/color/20/restart--v1.png"
-                                                // onClick={() => handleDelete(worker.ACC_ID)}
+                                                onClick={() => handleUpdateClick(worker.ACC_ID)}
                                                 alt=""
                                             />
                                         </td>
@@ -125,6 +170,11 @@ const ViewAccounts = () => {
                         </table>
                     ) : (
                         <p>Loading...</p>
+                    )}
+
+                    {/* Popup form */}
+                    {showPopup && (
+                        <UpdateForm worker={worker} setShowPopup={setShowPopup} onUpdate={handleAccountUpdate} />
                     )}
                 </div>
             </div>

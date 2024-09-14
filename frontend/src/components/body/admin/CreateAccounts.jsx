@@ -70,13 +70,13 @@ const CreateAccounts = () => {
                             </div>
                             <div className="col-4 d-flex flex-column">
                                 <label htmlFor='EMAIL'>Email address</label>
-                                <input className='text-inp' type="email" name="EMAIL" id="email" onChange={handleInputChange} value={FormData.email} required />
+                                <input className='text-inp' type="email" name="EMAIL" id="email" onChange={handleInputChange} value={FormData.EMAIL} required />
                             </div>
                         </div>
                         <div className="row d-flex justify-content-around">
                             <div className="col-4 d-flex flex-column">
                                 <label htmlFor='PHNO'>Phone number</label>
-                                <input className='text-inp' type="text" name="PHNO" id="phno" onChange={handleInputChange} value={FormData.phno} required />
+                                <input className='text-inp' type="text" name="PHNO" id="phno" onChange={handleInputChange} value={FormData.PHNO} required />
                             </div>
                             <div className="col-4 d-flex flex-column">
                                 <label htmlFor='GENDER'>Gender</label>
@@ -88,7 +88,7 @@ const CreateAccounts = () => {
                             </div>
                             <div className="col-4 d-flex flex-column">
                                 <label htmlFor='SSN'>SSN</label>
-                                <input className='text-inp' type="text" name="SSN" id="ssn" onChange={handleInputChange} value={FormData.ssn} required />
+                                <input className='text-inp' type="text" name="SSN" id="ssn" onChange={handleInputChange} value={FormData.SSN} required />
                             </div>
                         </div>
                         <div className="row d-flex justify-content-start">
