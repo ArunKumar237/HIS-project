@@ -45,7 +45,7 @@ const Sidebar = ({ onSelectMenu }) => {
         {
             text: "Admin",
             src: "https://img.icons8.com/ios/30/administrator-male--v1.png",
-            submenu: ["Create Accounts", "View Accounts", "Create Plans", "View Plans"]
+            submenu: ["Create Accounts", "View Accounts", "Create Plan Category", "Create Plans"]
         }
     ];
 

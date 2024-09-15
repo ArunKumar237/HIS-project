@@ -1,24 +1,37 @@
 from django.db import models
+from datetime import date
 class PlanCategory(models.Model):
     CATEGORY_ID = models.AutoField(primary_key=True, )
     CATEGORY_NAME = models.CharField(max_length=64)
-    ACTIVE_SW = models.BooleanField(default=False)
     CREATE_DATE = models.DateField(auto_now_add=True)
     UPDATE_DATE = models.DateField(auto_now=True)
-    CREATED_BY = models.CharField(max_length=64)
-    UPDATED_BY = models.CharField(max_length=64)
+    CREATED_BY = models.CharField(default='admin', max_length=64)
+    UPDATED_BY = models.CharField(default='admin', max_length=64)
 
 class PlanMaster(models.Model):
     PLAN_ID	= models.AutoField(primary_key=True)
     PLAN_NAME = models.CharField(max_length=64)
     PLAN_START_DATE = models.DateField()	
     PLAN_END_DATE = models.DateField()
-    PLAN_CATEGORY_ID = models.IntegerField()
+    PLAN_CATEGORY_ID = models.ForeignKey(PlanCategory, on_delete=models.CASCADE)
     ACTIVE_SW = models.BooleanField(default=False)
     CREATE_DATE = models.DateField(auto_now_add=True)
     UPDATE_DATE	= models.DateField(auto_now=True)
-    CREATED_BY = models.CharField(max_length=64)
-    UPDATED_BY = models.CharField(max_length=64)
+    CREATED_BY = models.CharField(default='admin', max_length=64)
+    UPDATED_BY = models.CharField(default='admin', max_length=64)
+
+    def save(self, *args, **kwargs):
+        # Get today's date
+        today = date.today()
+
+        # Check if today is between the start and end dates
+        if self.PLAN_START_DATE <= today <= self.PLAN_END_DATE:
+            self.ACTIVE_SW = True
+        else:
+            self.ACTIVE_SW = False
+
+        # Call the original save method to ensure the object is saved
+        super().save(*args, **kwargs)
 
 class CaseWorkerAcct(models.Model):
     ACC_ID	= models.AutoField(primary_key=True)

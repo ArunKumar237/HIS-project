@@ -15,6 +15,7 @@ import KidsDetails from './datacollection/KidsDetails'
 import SummaryScreen from './datacollection/SummaryScreen'
 import CreateApplication from './applicationRegistration/CreateApplication'
 import ViewApplications from './applicationRegistration/ViewApplications'
+import CreatePlanCategory from './admin/CreatePlanCategory'
 
 const Body = () => {
     const [selectedMenu, setSelectedMenu] = useState('dashboard');
@@ -58,6 +59,8 @@ const Body = () => {
                 return <CreateApplication />
             case 'ViewApplications':
                 return <ViewApplications />
+            case 'CreatePlanCategory':
+                return <CreatePlanCategory />
             default:
                 return <h1>Welcome!</h1>;
         }
