@@ -72,7 +72,7 @@ class CaseWorkerAcctCRUD(ViewSet):
     def retrieve(self, request, pk=None):
         try:
             account = CaseWorkerAcct.objects.get(pk=pk)
-        except Account.DoesNotExist:
+        except CaseWorkerAcct.DoesNotExist: 
             return Response({'error': 'Account not found'}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = CaseWorkerAcctSerializer(account)

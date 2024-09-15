@@ -11,7 +11,7 @@ class UserAdmin(BaseUserAdmin):
     # You can add other fields to list_display as needed
 
 class PlanCategoryAdmin(admin.ModelAdmin):
-    list_display=['CATEGORY_ID','CATEGORY_NAME','ACTIVE_SW','CREATE_DATE','UPDATE_DATE','CREATED_BY','UPDATED_BY']
+    list_display=['CATEGORY_ID','CATEGORY_NAME', 'CREATE_DATE','UPDATE_DATE','CREATED_BY','UPDATED_BY']
 
 class PlanMasterAdmin(admin.ModelAdmin):
     list_display=['PLAN_ID','PLAN_NAME','PLAN_START_DATE','PLAN_END_DATE','PLAN_CATEGORY_ID','ACTIVE_SW','CREATE_DATE','UPDATE_DATE','CREATED_BY','UPDATED_BY']
