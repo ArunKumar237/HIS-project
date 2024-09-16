@@ -1,50 +1,107 @@
-from django.shortcuts import render
-from rest_framework.viewsets import ViewSet
-from .serializers import  *
-from rest_framework.permissions import DjangoModelPermissions
+from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.models import User
+import jwt
+from django.db.models import Max
+from .models import AppReg
+from datacol_api.models import DC_Cases
+from datacol_api.serializers import DcCasesSerializer
+from .serializers import AppRegSerializer
 
+class AppReg_CRUD(viewsets.ModelViewSet):
+    queryset = AppReg.objects.all()
+    serializer_class = AppRegSerializer
+    permission_classes = [IsAuthenticated]  # Ensure user is authenticated
 
+    def create(self, request, *args, **kwargs):
+        # Retrieve data from the request
+        data = request.data
 
-# Create your views here.
-
-class appRegModuleModelViewSet(ViewSet):
-    permission_classes = [DjangoModelPermissions]
-    def list(self,request):
-        queryset = appReg_Module.objects.all()
-        serializer = appRegSerializers(queryset,many=True)
-        return Response(serializer.data)
-    def create(self,request,*args,**kwargs):
-        serializer = appRegSerializers(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-    def retrieve(self,request,pk=None):
+        # Decode the JWT token to get the user ID
+        token = request.headers.get('Authorization', '').replace('Bearer ', '')
         try:
-            appReg = appReg_Module.objects.get(pk = pk)
-        except appReg_Module.DoesNotExist:
-            return Response({'error':'Record Not Found'},status=status.HTTP_404_NOT_FOUND)
-        serializer = appRegSerializers(appReg)
-        return Response(serializer.data)
-    def update(self,request,pk=None):
+            userID = jwt.decode(token, options={"verify_signature": False}).get('user_id')
+        except jwt.DecodeError:
+            return Response({"detail": "Invalid token."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Get the username based on the user ID
         try:
-            appReg = appReg_Module.objects.get(pk=pk)
-        except appReg_Module.DoesNotExist:
-            return Response({'error':'Record Does Not Found'},status=status.HTTP_404_NOT_FOUND)
-        
-        serializer = appRegSerializers(appReg,data=request.data)
+            user = User.objects.get(id=userID)
+            username = user.username
+        except User.DoesNotExist:
+            return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        # If STATE_NAME is "New Jersey", generate the CASE_NUM
+        if data.get('STATE_NAME').lower() == 'new jersey':
+            max_case_num = AppReg.objects.aggregate(Max('CASE_NUM'))['CASE_NUM__max']
+            data['CASE_NUM'] = (max_case_num or 0) + 1
+
+        # Create a new instance of your model
+        serializer = AppRegSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
+            # Set CREATED_BY field if not provided
+            instance = serializer.save(CREATED_BY=username)
+
+            # Save the latest CASE_NUM in the DC_Cases model
+            dc_case_data = {
+                'CASE_NUM': instance.CASE_NUM,
+                'APP_ID': instance.APP_ID,
+            }
+
+            dc_case_serializer = DcCasesSerializer(data=dc_case_data)
+            if dc_case_serializer.is_valid():
+                dc_case_serializer.save()
+            else:
+                # Handle the case where DC_Cases data is invalid
+                return Response(dc_case_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, *args, **kwargs):
+        # Retrieve the instance to update
+        instance = self.get_object()
+
+        # Decode the JWT token to get the user ID
+        token = request.headers.get('Authorization', '').replace('Bearer ', '')
+        try:
+            userID = jwt.decode(token, options={"verify_signature": False}).get('user_id')
+        except jwt.DecodeError:
+            return Response({"detail": "Invalid token."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Get the username based on the user ID
+        try:
+            user = User.objects.get(id=userID)
+            username = user.username
+        except User.DoesNotExist:
+            return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Retrieve data from the request
+        data = request.data
+
+        # Check if STATE_NAME is being updated to "New Jersey"
+        if data.get('STATE_NAME').lower() == 'new jersey':
+            # If STATE_NAME is updated to "New Jersey", calculate new CASE_NUM
+            max_case_num = AppReg.objects.aggregate(Max('CASE_NUM'))['CASE_NUM__max']
+            new_case_num = (max_case_num or 0) + 1
+            data['CASE_NUM'] = new_case_num
+
+
+        # Update the instance with the new data
+        serializer = self.get_serializer(instance, data=data, partial=True)
+        if serializer.is_valid():
+            # Set UPDATED_BY field
+            serializer.save(UPDATED_BY=username)
             return Response(serializer.data)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-        
-    def destroy(self,request,pk=None):
-        try:
-            appReg = appReg_Module.objects.get(pk=pk)
-        except appReg_Module.DoesNotExist:
-            return Response({'error':'Record Not Found'},status=status.HTTP_404_NOT_FOUND)
-        
-        appReg.delete()
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)

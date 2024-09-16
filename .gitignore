@@ -186,3 +186,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+#exclude JPEG
+.jpg
+.JPEG

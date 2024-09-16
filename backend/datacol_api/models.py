@@ -1,18 +1,18 @@
 from django.db import models
+from appreg_api.models import AppReg
+from admin_api.models import PlanMaster
 
 # Create your models here.
 
 
 class DC_Cases(models.Model):
     CASE_ID = models.AutoField(primary_key=True)
-    CASE_NUM = models.CharField(max_length=6,null=True,blank=True)
-    APP_ID = models.CharField(max_length=6)
-    PLAN_ID = models.CharField(max_length=6)
+    CASE_NUM = models.ForeignKey(AppReg, to_field='CASE_NUM', on_delete=models.CASCADE)
+    APP_ID = models.CharField(max_length=225)
+    PLAN_ID = models.ForeignKey(PlanMaster, to_field='PLAN_ID', on_delete=models.CASCADE, default=None)
     class Meta:
         verbose_name = 'Dc_case'
         verbose_name_plural = 'Dc_cases'
-    def __str__(self):
-        return self.CASE_NUM
         
         
 class DC_Income(models.Model):

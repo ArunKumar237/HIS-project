@@ -16,6 +16,7 @@ import SummaryScreen from './datacollection/SummaryScreen'
 import CreateApplication from './applicationRegistration/CreateApplication'
 import ViewApplications from './applicationRegistration/ViewApplications'
 import CreatePlanCategory from './admin/CreatePlanCategory'
+import PlanSelection from './datacollection/PlanSelection'
 
 const Body = () => {
     const [selectedMenu, setSelectedMenu] = useState('dashboard');
@@ -23,6 +24,10 @@ const Body = () => {
     // Function to handle submenu selection
     const handleMenuSelection = (menu) => {
         setSelectedMenu(menu);
+    };
+
+    const handleDetailSelection = (appId) => {
+        setSelectedMenu('PlanSelection');
     };
 
     // Function to render UI based on selected submenu
@@ -58,9 +63,11 @@ const Body = () => {
             case 'CreateApplication':
                 return <CreateApplication />
             case 'ViewApplications':
-                return <ViewApplications />
+                return <ViewApplications onSelectDetail={handleDetailSelection} />
             case 'CreatePlanCategory':
                 return <CreatePlanCategory />
+            case 'PlanSelection':
+                return <PlanSelection />
             default:
                 return <h1>Welcome!</h1>;
         }

@@ -20,7 +20,7 @@ const Sidebar = ({ onSelectMenu }) => {
         {
             text: "Data Collection",
             src: "https://img.icons8.com/ios/30/data-backup.png",
-            submenu: ["Income Details", "Education Details", "Kids Details", "Summary Screen"] // Submenu items for Data Collection
+            submenu: ["Plan Selection", "Income Details", "Education Details", "Kids Details", "Summary Screen"] // Submenu items for Data Collection
         },
         {
             text: "Eligibility Determination",
