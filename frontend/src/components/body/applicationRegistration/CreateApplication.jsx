@@ -26,7 +26,7 @@ const CreateApplication = () => {
         try {
             // Post the form data to the API endpoint
             const response = await axios.post('http://127.0.0.1:8000/api/Ar/appRegister/', formData);
-            alert('Data submitted successfully!');
+
             setFormData({
                 FULLNAME: '',
                 EMAIL: '',

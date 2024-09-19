@@ -1,8 +1,8 @@
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
-import jwt
 from django.db.models import Max
 from .models import AppReg
 from datacol_api.models import DC_Cases
@@ -12,25 +12,16 @@ from .serializers import AppRegSerializer
 class AppReg_CRUD(viewsets.ModelViewSet):
     queryset = AppReg.objects.all()
     serializer_class = AppRegSerializer
-    permission_classes = [IsAuthenticated]  # Ensure user is authenticated
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
+        # Use request.user to get the authenticated user
+        user = request.user
+        if not user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+
         # Retrieve data from the request
         data = request.data
-
-        # Decode the JWT token to get the user ID
-        token = request.headers.get('Authorization', '').replace('Bearer ', '')
-        try:
-            userID = jwt.decode(token, options={"verify_signature": False}).get('user_id')
-        except jwt.DecodeError:
-            return Response({"detail": "Invalid token."}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Get the username based on the user ID
-        try:
-            user = User.objects.get(id=userID)
-            username = user.username
-        except User.DoesNotExist:
-            return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
 
         # If STATE_NAME is "New Jersey", generate the CASE_NUM
         if data.get('STATE_NAME').lower() == 'new jersey':
@@ -41,14 +32,13 @@ class AppReg_CRUD(viewsets.ModelViewSet):
         serializer = AppRegSerializer(data=data)
         if serializer.is_valid():
             # Set CREATED_BY field if not provided
-            instance = serializer.save(CREATED_BY=username)
+            instance = serializer.save(CREATED_BY=user.username)
 
             # Save the latest CASE_NUM in the DC_Cases model
             dc_case_data = {
                 'CASE_NUM': instance.CASE_NUM,
                 'APP_ID': instance.APP_ID,
             }
-
             dc_case_serializer = DcCasesSerializer(data=dc_case_data)
             if dc_case_serializer.is_valid():
                 dc_case_serializer.save()
@@ -63,19 +53,10 @@ class AppReg_CRUD(viewsets.ModelViewSet):
         # Retrieve the instance to update
         instance = self.get_object()
 
-        # Decode the JWT token to get the user ID
-        token = request.headers.get('Authorization', '').replace('Bearer ', '')
-        try:
-            userID = jwt.decode(token, options={"verify_signature": False}).get('user_id')
-        except jwt.DecodeError:
-            return Response({"detail": "Invalid token."}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Get the username based on the user ID
-        try:
-            user = User.objects.get(id=userID)
-            username = user.username
-        except User.DoesNotExist:
-            return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+        # Use request.user to get the authenticated user
+        user = request.user
+        if not user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
 
         # Retrieve data from the request
         data = request.data
@@ -87,12 +68,11 @@ class AppReg_CRUD(viewsets.ModelViewSet):
             new_case_num = (max_case_num or 0) + 1
             data['CASE_NUM'] = new_case_num
 
-
         # Update the instance with the new data
         serializer = self.get_serializer(instance, data=data, partial=True)
         if serializer.is_valid():
             # Set UPDATED_BY field
-            serializer.save(UPDATED_BY=username)
+            serializer.save(UPDATED_BY=user.username)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -20,6 +20,8 @@ import PlanSelection from './datacollection/PlanSelection'
 
 const Body = () => {
     const [selectedMenu, setSelectedMenu] = useState('dashboard');
+    const [selectedPlan, setSelectedPlan] = useState('');
+    console.log('selectedPlan:', selectedPlan)
 
     // Function to handle submenu selection
     const handleMenuSelection = (menu) => {
@@ -51,15 +53,15 @@ const Body = () => {
             case 'HistoryNotices':
                 return <HistoryNotices />;
             case 'DetermineEligibility':
-                return <DetermineEligibility />;
+                return <DetermineEligibility setSelectedMenu={setSelectedMenu} />;
             case 'IncomeDetails':
-                return <IncomeDetails />
+                return <IncomeDetails setSelectedMenu={setSelectedMenu} selectedPlan={selectedPlan} />
             case 'EducationDetails':
-                return <EducationDetails />
+                return <EducationDetails setSelectedMenu={setSelectedMenu} selectedPlan={selectedPlan} />
             case 'KidsDetails':
-                return <KidsDetails />
+                return <KidsDetails setSelectedMenu={setSelectedMenu} selectedPlan={selectedPlan} />
             case 'SummaryScreen':
-                return <SummaryScreen />
+                return <SummaryScreen setSelectedMenu={setSelectedMenu} />
             case 'CreateApplication':
                 return <CreateApplication />
             case 'ViewApplications':
@@ -67,7 +69,7 @@ const Body = () => {
             case 'CreatePlanCategory':
                 return <CreatePlanCategory />
             case 'PlanSelection':
-                return <PlanSelection />
+                return <PlanSelection setSelectedMenu={setSelectedMenu} setSelectedPlan={setSelectedPlan} selectedPlan={selectedPlan} />
             default:
                 return <h1>Welcome!</h1>;
         }

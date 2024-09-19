@@ -15,3 +15,7 @@ class AppReg(models.Model):
     UPDATE_DATE	= models.DateField(auto_now_add=True)
     CREATED_BY	= models.CharField(max_length=255, null=True, blank=True)	
     UPDATED_BY = models.CharField(max_length=255, null=True, blank=True)	
+
+    def __str__(self):
+        # Return a string representation of the instance
+        return f"{self.CASE_NUM}"

@@ -8,12 +8,17 @@ const ViewApplications = ({ onSelectDetail }) => {
     const [error, setError] = useState(null);
     const [selectedAppReg, setSelectedAppReg] = useState(null);
     const [showUpdatePopup, setShowUpdatePopup] = useState(false);
-    const [selectedCaseNum, setSelectedCaseNum] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/Ar/appRegister/');
+                const token = localStorage.getItem('access_token'); // Replace with your actual token
+
+                const response = await axios.get('http://127.0.0.1:8000/api/Ar/appRegister/', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
                 setAppRegs(response.data);
             } catch (error) {
                 setError(error.message || 'Error fetching data');
