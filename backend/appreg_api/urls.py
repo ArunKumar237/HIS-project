@@ -1,9 +1,9 @@
 from rest_framework.routers import DefaultRouter
-from appreg_api.views import appRegModuleModelViewSet
+from appreg_api.views import AppReg_CRUD
 from django.urls import path,include
 
 router = DefaultRouter()
-router.register('appRegister',appRegModuleModelViewSet,basename='appReg')
+router.register('appRegister',AppReg_CRUD,basename='appRegister')
 
 urlpatterns = [
    

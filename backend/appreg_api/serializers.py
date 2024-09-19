@@ -1,7 +1,9 @@
-from rest_framework import serializers
-from .models import *
+# serializers.py
 
-class appRegSerializers(serializers.ModelSerializer):
+from rest_framework import serializers
+from .models import AppReg
+
+class AppRegSerializer(serializers.ModelSerializer):
     class Meta:
+        model = AppReg
         fields = '__all__'
-        model = appReg_Module

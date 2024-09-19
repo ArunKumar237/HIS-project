@@ -10,7 +10,7 @@ class PlanCategory(models.Model):
 
 class PlanMaster(models.Model):
     PLAN_ID	= models.AutoField(primary_key=True)
-    PLAN_NAME = models.CharField(max_length=64)
+    PLAN_NAME = models.CharField(max_length=64, unique=True)
     PLAN_START_DATE = models.DateField()	
     PLAN_END_DATE = models.DateField()
     PLAN_CATEGORY_ID = models.ForeignKey(PlanCategory, on_delete=models.CASCADE)
@@ -32,6 +32,9 @@ class PlanMaster(models.Model):
 
         # Call the original save method to ensure the object is saved
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.PLAN_NAME}"
 
 class CaseWorkerAcct(models.Model):
     ACC_ID	= models.AutoField(primary_key=True)
