@@ -4,7 +4,7 @@ import CreateAccounts from './admin/CreateAccounts'
 import ViewAccounts from './admin/ViewAccounts'
 import CreatePlans from './admin/CreatePlans'
 import ViewPlans from './admin/ViewPlans'
-import Correspondence from './correspondence/Correspondence'
+import ViewNotices from './correspondence/ViewNotices'
 import PendingNotices from './correspondence/PendingNotices'
 import HistoryNotices from './correspondence/HistoryNotices'
 import DetermineEligibility from './determineEligibility/DetermineEligibility'
@@ -46,8 +46,8 @@ const Body = () => {
                 return <CreatePlans />;
             case 'ViewPlans':
                 return <ViewPlans />;
-            case 'Correspondence':
-                return <Correspondence />;
+            case 'ViewNotices':
+                return <ViewNotices />;
             case 'PendingNotices':
                 return <PendingNotices />;
             case 'HistoryNotices':

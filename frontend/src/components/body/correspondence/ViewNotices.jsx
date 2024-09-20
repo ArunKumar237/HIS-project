@@ -1,15 +1,15 @@
 import React from 'react'
 
-const Correspondence = () => {
+const ViewNotices = () => {
     return (
         <div>
             <div className="row d-flex justify-content-center m-3 mb-5">
                 <div className="col bg-white rounded-3 shadow-sm p-3">
-                    <h4 className='ps-3'>Correspondence</h4>
+                    <h4 className='ps-3'>View Notices</h4>
                 </div>
             </div>
         </div>
     )
 }
 
-export default Correspondence
+export default ViewNotices

@@ -30,7 +30,7 @@ const Sidebar = ({ onSelectMenu }) => {
         {
             text: "Correspondence",
             src: "https://img.icons8.com/ios/30/secured-letter--v1.png",
-            submenu: ["Correspondence", "Pending Notices", "History Notices"]
+            submenu: ["View Notices", "Pending Notices", "History Notices"]
         },
         {
             text: "Benefit Issuance",
