@@ -8,8 +8,8 @@ class eligibilityDetermination(models.Model):
     CASE_NUM = models.IntegerField()
     PLAN_NAME = models.CharField(max_length=255)
     PLAN_STATUS = models.CharField(max_length=255)
-    PLAN_START_DATE = models.DateField()
-    PLAN_END_DATE = models.DateField()
-    BENEFIT_AMT = models.IntegerField()
+    PLAN_START_DATE = models.DateField(null=True, blank=True)
+    PLAN_END_DATE = models.DateField(null=True, blank=True)
+    BENEFIT_AMT = models.IntegerField(null=True, blank=True)
     DENIAL_REASON = models.CharField(max_length=255, null=True, blank=True)
 

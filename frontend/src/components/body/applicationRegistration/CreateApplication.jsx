@@ -6,6 +6,7 @@ const CreateApplication = () => {
         FULLNAME: '',
         EMAIL: '',
         PHNO: '',
+        DOB: '',  // Added DOB state
         SSN: '',
         GENDER: '',
         STATE_NAME: '',
@@ -31,15 +32,16 @@ const CreateApplication = () => {
                 FULLNAME: '',
                 EMAIL: '',
                 PHNO: '',
+                DOB: '',  // Reset DOB state
                 SSN: '',
                 GENDER: '',
                 STATE_NAME: '',
             });
-            setSuccess('Successfully submited')
-            setError(null)
+            setSuccess('Successfully submitted');
+            setError(null);
         } catch (error) {
             setError('Failed to submit data. Please try again.');
-            setSuccess(null)
+            setSuccess(null);
             console.error('Error submitting data:', error);
         }
     };
@@ -48,13 +50,13 @@ const CreateApplication = () => {
         <div>
             <div className="row d-flex justify-content-center m-3 mb-5">
                 <div className="col bg-white rounded-3 shadow-sm p-3">
-                    <h4 className='ps-3'>CreateApplication</h4>
+                    <h4 className="ps-3">Create Application</h4>
                 </div>
             </div>
             <div className="row d-flex justify-content-center m-3">
                 <div className="col bg-white rounded-3 shadow-sm p-3">
                     <form onSubmit={handleSubmit} className="d-flex flex-column gap-4">
-                        <div className="row d-flex justify-content-around">
+                        <div className="row d-flex justify-content-start">
                             <div className="col-4 d-flex flex-column">
                                 <label htmlFor="FULLNAME">Full Name</label>
                                 <input
@@ -86,6 +88,18 @@ const CreateApplication = () => {
                                     name="PHNO"
                                     id="PHNO"
                                     value={formData.PHNO}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+                            </div>
+
+                            <div className="col-4 d-flex flex-column">
+                                <label htmlFor="DOB">Date of Birth</label>  {/* DOB Field */}
+                                <input
+                                    type="date"
+                                    name="DOB"
+                                    id="DOB"
+                                    value={formData.DOB}
                                     onChange={handleInputChange}
                                     required
                                 />
@@ -130,14 +144,14 @@ const CreateApplication = () => {
                                 />
                             </div>
                         </div>
-                        <button className='align-self-start px-3 py-1 rounded-1' type="submit">Submit</button>
+                        <button className="align-self-start px-3 py-1 rounded-1" type="submit">Submit</button>
                         {error && <p className="error-message">{error}</p>}
                         {success && <p>{success}</p>}
                     </form>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default CreateApplication
+export default CreateApplication;

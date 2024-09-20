@@ -48,8 +48,12 @@ const IncomeDetails = ({ setSelectedMenu, selectedPlan }) => {
                 setCountdown((prevCountdown) => prevCountdown - 1);
             }, 1000);
         } else if (countdown === 0) {
-            if (selectedPlan === "AllInOne") {
+            if (selectedPlan === 'NJW') {
+                setSelectedMenu('EducationDetails');
+            } else if (selectedPlan === 'CCAP') {
                 setSelectedMenu('KidsDetails')
+            } else if (selectedPlan === 'Medicare') {
+                setSelectedMenu('SummaryScreen')
             } else {
                 setSelectedMenu('SummaryScreen')
             }
@@ -120,7 +124,7 @@ const IncomeDetails = ({ setSelectedMenu, selectedPlan }) => {
                             <div className="col-4 d-flex flex-column">
                                 <label htmlFor="empIncome" className="form-label">Employment Income</label>
                                 <input
-                                    type="text"
+                                    type="number"
                                     className="form-control"
                                     id="empIncome"
                                     value={empIncome}
@@ -131,7 +135,7 @@ const IncomeDetails = ({ setSelectedMenu, selectedPlan }) => {
                             <div className="col-4 d-flex flex-column">
                                 <label htmlFor="propertyIncome" className="form-label">Property Income</label>
                                 <input
-                                    type="text"
+                                    type="number"
                                     className="form-control"
                                     id="propertyIncome"
                                     value={propertyIncome}

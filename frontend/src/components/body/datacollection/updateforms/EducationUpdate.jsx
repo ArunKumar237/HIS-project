@@ -48,7 +48,7 @@ const EducationUpdate = ({ selectedTable, setShowPopup, onUpdate }) => {
                     <div>
                         <label>Graduation Year:</label>
                         <input
-                            type="number"
+                            type="date"
                             name="GRADUATION_YEAR"
                             value={formData.GRADUATION_YEAR}
                             onChange={handleChange}

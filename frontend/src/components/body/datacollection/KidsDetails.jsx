@@ -144,7 +144,7 @@ const ChildrensDetails = ({ setSelectedMenu, selectedPlan }) => {
                                 <div className="col-4 d-flex flex-column">
                                     <label htmlFor={`ssn-${index}`} className="form-label">Child SSN</label>
                                     <input
-                                        type="text"
+                                        type="number"
                                         className="form-control"
                                         id={`ssn-${index}`}
                                         value={child.ssn}

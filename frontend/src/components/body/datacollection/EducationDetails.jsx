@@ -117,7 +117,7 @@ const EducationDetails = ({ setSelectedMenu, selectedPlan }) => {
                             <div className="col-4 d-flex flex-column">
                                 <label htmlFor="graduationYear" className="form-label">Graduation Year</label>
                                 <input
-                                    type="number"
+                                    type="date"
                                     className="form-control"
                                     id="graduationYear"
                                     value={graduationYear}
