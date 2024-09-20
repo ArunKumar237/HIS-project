@@ -104,13 +104,7 @@ const PlanSelection = ({ setSelectedMenu, setSelectedPlan }) => {
             }, 1000);
         } else if (countdown === 0) {
             // Redirect based on selected plan
-            if (selectedPlanId === 'AllInOne' || selectedPlanId === 'SNAP') {
-                setSelectedMenu('IncomeDetails');
-            } else if (selectedPlanId === 'CCAP') {
-                setSelectedMenu('KidsDetails');
-            } else if (selectedPlanId === 'NJW') {
-                setSelectedMenu('EducationDetails');
-            }
+            setSelectedMenu('IncomeDetails');
         }
         return () => clearInterval(timer); // Clean up the timer on component unmount
     }, [countdown, selectedPlanId, setSelectedMenu]);

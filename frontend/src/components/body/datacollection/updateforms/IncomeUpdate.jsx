@@ -59,6 +59,7 @@ const IncomeUpdateForm = ({ selectedTable, setShowPopup, onUpdate }) => {
                                 name="CASE_NUM"
                                 value={formData.CASE_NUM}
                                 onChange={handleChange}
+                                readOnly
                             />
                         </div>
                     </div>

@@ -5,6 +5,7 @@ import KidsUpdate from './updateforms/KidsUpdate';
 import EducationUpdate from './updateforms/EducationUpdate';
 
 const SummaryScreen = ({ setSelectedMenu }) => {
+    const [cases, setCases] = useState([]);
     const [incomeDetails, setIncomeDetails] = useState([]);
     const [kidsDetails, setKidsDetails] = useState([]);
     const [educationDetails, setEducationDetails] = useState([]);
@@ -15,11 +16,15 @@ const SummaryScreen = ({ setSelectedMenu }) => {
     const [countdown, setCountdown] = useState(null);
     const [isCountdownActive, setIsCountdownActive] = useState(false);
 
+    // Function to fetch data
     const fetchData = async () => {
         try {
             const token = localStorage.getItem('access_token');
 
-            const [incomeRes, kidsRes, educationRes] = await Promise.all([
+            const [casesRes, incomeRes, kidsRes, educationRes] = await Promise.all([
+                axios.get('http://127.0.0.1:8000/api/Dc/Dc_cases/', {
+                    headers: { Authorization: `Bearer ${token}` },
+                }),
                 axios.get('http://127.0.0.1:8000/api/Dc/Dc_income/', {
                     headers: { Authorization: `Bearer ${token}` },
                 }),
@@ -31,6 +36,7 @@ const SummaryScreen = ({ setSelectedMenu }) => {
                 }),
             ]);
 
+            setCases(casesRes.data);
             setIncomeDetails(incomeRes.data);
             setKidsDetails(kidsRes.data);
             setEducationDetails(educationRes.data);
@@ -40,10 +46,12 @@ const SummaryScreen = ({ setSelectedMenu }) => {
         }
     };
 
+    // Fetch data on component mount
     useEffect(() => {
         fetchData();
     }, []);
 
+    // Countdown timer for redirection
     useEffect(() => {
         let timer;
         if (isCountdownActive && countdown > 0) {
@@ -51,15 +59,14 @@ const SummaryScreen = ({ setSelectedMenu }) => {
                 setCountdown((prev) => prev - 1);
             }, 1000);
         } else if (countdown === 0) {
-            // Redirect or perform some action when countdown reaches 0
             setIsCountdownActive(false);
-            console.log('Countdown finished');
-            setSelectedMenu('DetermineEligibility')
+            setSelectedMenu('DetermineEligibility');
         }
 
         return () => clearInterval(timer);
     }, [isCountdownActive, countdown]);
 
+    // Function to handle update click
     const handleUpdateClick = async (id, table, type) => {
         const isConfirmed = window.confirm(`Are you sure you want to update the record ${id}?`);
         if (!isConfirmed) return;
@@ -77,6 +84,7 @@ const SummaryScreen = ({ setSelectedMenu }) => {
         }
     };
 
+    // Function to handle delete action
     const handleDelete = async (id, table) => {
         const isConfirmed = window.confirm(`Are you sure you want to delete the record ${id}?`);
         if (!isConfirmed) return;
@@ -92,15 +100,31 @@ const SummaryScreen = ({ setSelectedMenu }) => {
         }
     };
 
+    // Function to handle update action completion
     const handleAccountUpdate = async () => {
         setShowUpdatePopup(false);
         await fetchData();
     };
 
+    // Function to handle proceed click
     const handleProceedClick = () => {
         setCountdown(3); // Set countdown duration (e.g., 3 seconds)
         setIsCountdownActive(true);
     };
+
+    // Get the latest case number
+    const latestCaseNumber = cases.length ? Math.max(...cases.map((c) => c.CASE_NUM)) : null;
+
+    // Filter details based on the latest case number
+    const filteredIncomeDetails = incomeDetails.filter(
+        (income) => income.CASE_NUM === latestCaseNumber
+    );
+    const filteredKidsDetails = kidsDetails.filter(
+        (kid) => kid.CASE_NUM === latestCaseNumber
+    );
+    const filteredEducationDetails = educationDetails.filter(
+        (edu) => edu.CASE_NUM === latestCaseNumber
+    );
 
     return (
         <div>
@@ -111,10 +135,10 @@ const SummaryScreen = ({ setSelectedMenu }) => {
             </div>
 
             {/* Income Table */}
-            <div className="row d-flex justify-content-center m-3">
-                <div className="col bg-white rounded-3 shadow-sm p-3">
-                    <h5>Income Details</h5>
-                    {incomeDetails.length ? (
+            {filteredIncomeDetails.length > 0 && (
+                <div className="row d-flex justify-content-center m-3">
+                    <div className="col bg-white rounded-3 shadow-sm p-3">
+                        <h5>Income Details</h5>
                         <table className="w-100 text-center">
                             <thead>
                                 <tr>
@@ -127,7 +151,7 @@ const SummaryScreen = ({ setSelectedMenu }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {incomeDetails.map((income) => (
+                                {filteredIncomeDetails.map((income) => (
                                     <tr key={income.INCOME_ID}>
                                         <td>{income.INCOME_ID}</td>
                                         <td>{income.CASE_NUM}</td>
@@ -137,7 +161,13 @@ const SummaryScreen = ({ setSelectedMenu }) => {
                                             <img
                                                 style={{ cursor: 'pointer' }}
                                                 src="https://img.icons8.com/color/20/restart--v1.png"
-                                                onClick={() => handleUpdateClick(income.INCOME_ID, 'Dc_income', 'income')}
+                                                onClick={() =>
+                                                    handleUpdateClick(
+                                                        income.INCOME_ID,
+                                                        'Dc_income',
+                                                        'income'
+                                                    )
+                                                }
                                                 alt="Update"
                                             />
                                         </td>
@@ -145,7 +175,9 @@ const SummaryScreen = ({ setSelectedMenu }) => {
                                             <img
                                                 style={{ cursor: 'pointer' }}
                                                 src="https://img.icons8.com/color/20/delete-forever.png"
-                                                onClick={() => handleDelete(income.INCOME_ID, 'Dc_income')}
+                                                onClick={() =>
+                                                    handleDelete(income.INCOME_ID, 'Dc_income')
+                                                }
                                                 alt="Delete"
                                             />
                                         </td>
@@ -153,17 +185,15 @@ const SummaryScreen = ({ setSelectedMenu }) => {
                                 ))}
                             </tbody>
                         </table>
-                    ) : (
-                        <p>Loading...</p>
-                    )}
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Kids Table */}
-            <div className="row d-flex justify-content-center m-3">
-                <div className="col bg-white rounded-3 shadow-sm p-3">
-                    <h5>Kids Details</h5>
-                    {kidsDetails.length ? (
+            {filteredKidsDetails.length > 0 && (
+                <div className="row d-flex justify-content-center m-3">
+                    <div className="col bg-white rounded-3 shadow-sm p-3">
+                        <h5>Kids Details</h5>
                         <table className="w-100 text-center">
                             <thead>
                                 <tr>
@@ -176,7 +206,7 @@ const SummaryScreen = ({ setSelectedMenu }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {kidsDetails.map((child) => (
+                                {filteredKidsDetails.map((child) => (
                                     <tr key={child.CHILDREN_ID}>
                                         <td>{child.CHILDREN_ID}</td>
                                         <td>{child.CASE_NUM}</td>
@@ -186,7 +216,13 @@ const SummaryScreen = ({ setSelectedMenu }) => {
                                             <img
                                                 style={{ cursor: 'pointer' }}
                                                 src="https://img.icons8.com/color/20/restart--v1.png"
-                                                onClick={() => handleUpdateClick(child.CHILDREN_ID, 'Dc_children', 'kids')}
+                                                onClick={() =>
+                                                    handleUpdateClick(
+                                                        child.CHILDREN_ID,
+                                                        'Dc_children',
+                                                        'kids'
+                                                    )
+                                                }
                                                 alt="Update"
                                             />
                                         </td>
@@ -194,7 +230,9 @@ const SummaryScreen = ({ setSelectedMenu }) => {
                                             <img
                                                 style={{ cursor: 'pointer' }}
                                                 src="https://img.icons8.com/color/20/delete-forever.png"
-                                                onClick={() => handleDelete(child.CHILDREN_ID, 'Dc_children')}
+                                                onClick={() =>
+                                                    handleDelete(child.CHILDREN_ID, 'Dc_children')
+                                                }
                                                 alt="Delete"
                                             />
                                         </td>
@@ -202,30 +240,28 @@ const SummaryScreen = ({ setSelectedMenu }) => {
                                 ))}
                             </tbody>
                         </table>
-                    ) : (
-                        <p>Loading...</p>
-                    )}
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Education Table */}
-            <div className="row d-flex justify-content-center m-3">
-                <div className="col bg-white rounded-3 shadow-sm p-3">
-                    <h5>Education Details</h5>
-                    {educationDetails.length ? (
+            {filteredEducationDetails.length > 0 && (
+                <div className="row d-flex justify-content-center m-3">
+                    <div className="col bg-white rounded-3 shadow-sm p-3">
+                        <h5>Education Details</h5>
                         <table className="w-100 text-center">
                             <thead>
                                 <tr>
                                     <th>Education ID</th>
                                     <th>Case Num</th>
-                                    <th>Qualification</th>
-                                    <th>Graduation Yr</th>
+                                    <th>Highest Qualification</th>
+                                    <th>Graduation Year</th>
                                     <th>Update</th>
                                     <th>Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {educationDetails.map((edu) => (
+                                {filteredEducationDetails.map((edu) => (
                                     <tr key={edu.EDU_ID}>
                                         <td>{edu.EDU_ID}</td>
                                         <td>{edu.CASE_NUM}</td>
@@ -235,7 +271,13 @@ const SummaryScreen = ({ setSelectedMenu }) => {
                                             <img
                                                 style={{ cursor: 'pointer' }}
                                                 src="https://img.icons8.com/color/20/restart--v1.png"
-                                                onClick={() => handleUpdateClick(edu.EDU_ID, 'Dc_education', 'education')}
+                                                onClick={() =>
+                                                    handleUpdateClick(
+                                                        edu.EDU_ID,
+                                                        'Dc_education',
+                                                        'education'
+                                                    )
+                                                }
                                                 alt="Update"
                                             />
                                         </td>
@@ -243,7 +285,9 @@ const SummaryScreen = ({ setSelectedMenu }) => {
                                             <img
                                                 style={{ cursor: 'pointer' }}
                                                 src="https://img.icons8.com/color/20/delete-forever.png"
-                                                onClick={() => handleDelete(edu.EDU_ID, 'Dc_education')}
+                                                onClick={() =>
+                                                    handleDelete(edu.EDU_ID, 'Dc_education')
+                                                }
                                                 alt="Delete"
                                             />
                                         </td>
@@ -251,47 +295,48 @@ const SummaryScreen = ({ setSelectedMenu }) => {
                                 ))}
                             </tbody>
                         </table>
-                    ) : (
-                        <p>Loading...</p>
-                    )}
-                    {isCountdownActive && <p className="text-success mt-3">{`${countdown ? `, wait you're beign redirect in ${countdown}s` : ''}`}</p>}
+                    </div>
                 </div>
-            </div>
+            )}
 
-            {/* Proceed Button */}
-            <div className="row d-flex justify-content-center m-3">
-                <div className="col">
-                    <button
-                        type="button"
-                        className='align-self-start px-3 py-1 rounded-1'
-                        onClick={handleProceedClick}
-                    >
+            <div className="row d-flex justify-content-center m-3 mb-5">
+                <div className="col d-flex justify-content-end">
+                    <button className="align-self-start px-3 py-1 rounded-1" onClick={handleProceedClick}>
                         Proceed
                     </button>
                 </div>
             </div>
 
-            {/* Popup forms */}
+            {/* Update Forms */}
             {showUpdatePopup && updateType === 'income' && (
                 <IncomeUpdate
                     selectedTable={selectedTable}
-                    setShowPopup={setShowUpdatePopup}
+                    setShowUpdatePopup={setShowUpdatePopup}
                     onUpdate={handleAccountUpdate}
                 />
             )}
             {showUpdatePopup && updateType === 'kids' && (
                 <KidsUpdate
                     selectedTable={selectedTable}
-                    setShowPopup={setShowUpdatePopup}
+                    setShowUpdatePopup={setShowUpdatePopup}
                     onUpdate={handleAccountUpdate}
                 />
             )}
             {showUpdatePopup && updateType === 'education' && (
                 <EducationUpdate
                     selectedTable={selectedTable}
-                    setShowPopup={setShowUpdatePopup}
+                    setShowUpdatePopup={setShowUpdatePopup}
                     onUpdate={handleAccountUpdate}
                 />
+            )}
+
+            {/* Countdown Timer */}
+            {isCountdownActive && (
+                <div className="row d-flex justify-content-center m-3">
+                    <div className="col bg-white rounded-3 shadow-sm p-3 text-center">
+                        <p>Redirecting in {countdown} seconds...</p>
+                    </div>
+                </div>
             )}
         </div>
     );
