@@ -188,5 +188,6 @@ dist-ssr
 *.sw?
 
 #exclude JPEG
-.jpg
-.JPEG
+*.jpg
+*.JPEG
+*.pdf

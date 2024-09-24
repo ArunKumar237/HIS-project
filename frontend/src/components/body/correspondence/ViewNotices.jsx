@@ -72,14 +72,14 @@ const ViewNotices = () => {
         doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 10, doc.internal.pageSize.height - 10);
 
         // Open the generated PDF in a new window
-        return doc.output('blob')
+        window.open(doc.output('bloburl'), '_blank');
     };
 
     // Function to fetch notices with optional search term
     const fetchNotices = async (search = '') => {
         try {
             const token = localStorage.getItem('access_token');
-            const response = await axios.get(`http://127.0.0.1:8000/api/eligible/pendingNotices/?search=${search}`, {
+            const response = await axios.get(`http://127.0.0.1:8000/api/eligible/searchNotice/?search=${search}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -100,49 +100,11 @@ const ViewNotices = () => {
         setSearchTerm(event.target.value);
     };
 
-    // Function to handle sending the notice and updating MAIL_SENT in the backend
-    const sendNotice = async (notice) => {
-        setLoadingStates((prevState) => ({ ...prevState, [notice.ELIG_ID]: true })); // Set loading state
-
-        try {
-            const token = localStorage.getItem('access_token');
-
-            // (Generate the PDF with content, as you did in the `generatePdfForNotice` function)
-            const pdfBlob = generatePdfForNotice(notice)
-
-            // Create FormData to send the PDF file
-            const formData = new FormData();
-            formData.append('pdf', pdfBlob, 'notice.pdf'); // Append the PDF blob with a file name
-
-            // Send the request with FormData
-            const response = await axios.post(
-                `http://127.0.0.1:8000/api/eligible/pendingNotices/${notice.ELIG_ID}/send_notice/`,
-                formData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'multipart/form-data', // Specify content type for file upload
-                    },
-                }
-            );
-
-            // Show confirmation message and remove the loading state
-            setConfirmationMessages((prevState) => ({ ...prevState, [notice.ELIG_ID]: response.data.message }));
-            setLoadingStates((prevState) => ({ ...prevState, [notice.ELIG_ID]: false }));
-
-            // Optionally refresh notices to reflect updated data
-            fetchNotices();
-        } catch (error) {
-            console.error('Error sending notice:', error.response ? error.response.data : error.message);
-            setLoadingStates((prevState) => ({ ...prevState, [notice.ELIG_ID]: false })); // Remove loading state on error
-        }
-    };
-
     return (
         <div>
             <div className="row d-flex justify-content-center m-3 mb-5">
                 <div className="col bg-white rounded-3 shadow-sm p-3 d-flex justify-content-between align-items-center">
-                    <h4 className="ps-3">Pending Notices</h4>
+                    <h4 className="ps-3">View Notices</h4>
                     {/* Search Input Field */}
                     <input
                         type="text"
@@ -165,7 +127,7 @@ const ViewNotices = () => {
                                 <th>Start Date</th>
                                 <th>End Date</th>
                                 <th>Benefit Amount</th>
-                                <th>Send Notice</th>
+                                <th>Print Notice</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -193,10 +155,11 @@ const ViewNotices = () => {
                                             />
                                         ) : (
                                             <img
-                                                src="https://img.icons8.com/pulsar-color/48/send.png"
+                                                // src="https://img.icons8.com/pulsar-color/48/send.png"
+                                                src="https://img.icons8.com/pulsar-color/48/print.png"
                                                 alt="Send notice"
                                                 style={{ cursor: 'pointer', width: '30px', height: '30px' }}
-                                                onClick={() => sendNotice(notice)}
+                                                onClick={() => generatePdfForNotice(notice)}
                                             />
                                         )}
                                     </td>

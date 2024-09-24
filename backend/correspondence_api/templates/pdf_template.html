@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Eligibility Notice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h3 {
+            color: #0056b3;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 5px;
+            text-align: left;
+            font-size: 12pt;
+            /* Use pt for absolute sizing */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>Insurance Notice</h3>
+    <p>Date: {{ eligibility.PLAN_START_DATE|date:"d-m-Y" }}</p>
+    <table>
+        <tr>
+            <th>Case Number</th>
+            <th>Plan Name</th>
+            <th>Plan Status</th>
+            <th>Benefit Amount</th>
+        </tr>
+        <tr>
+            <td>{{ eligibility.CASE_NUM }}</td>
+            <td>{{ eligibility.PLAN_NAME }}</td>
+            <td>{{ eligibility.PLAN_STATUS }}</td>
+            <td>{{ eligibility.BENEFIT_AMT }}</td>
+        </tr>
+    </table>
+    <p>Dear Beneficiary,</p>
+    <p>We are pleased to inform you that you are approved for the {{ eligibility.PLAN_NAME }} plan.</p>
+</body>
+
+</html>
