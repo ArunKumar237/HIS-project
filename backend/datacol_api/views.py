@@ -1,7 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.decorators import api_view
 from .serializers import *
 from admin_api.serializers import PlanMasterSerializer
@@ -27,8 +26,6 @@ def get_plan_names(request):
     return Response(serializer.data)
 
 class DcCasesModelViews(viewsets.ViewSet):
-    permission_classes = [DjangoModelPermissions]
-
     def get_queryset(self):
         return DC_Cases.objects.all()
     
@@ -71,7 +68,6 @@ class DcCasesModelViews(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class DcIncomeModelView(viewsets.ViewSet):
-    permission_classes = [DjangoModelPermissions]
     
     def get_queryset(self):
         return DC_Cases.objects.all()
@@ -115,7 +111,6 @@ class DcIncomeModelView(viewsets.ViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class DcChildrensModelView(viewsets.ViewSet):
-    permission_classes = [DjangoModelPermissions]
 
     def get_queryset(self):
         return DC_Cases.objects.all()
@@ -180,7 +175,6 @@ class DcChildrensModelView(viewsets.ViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class DcEducationsModelView(viewsets.ViewSet):
-    permission_classes = [DjangoModelPermissions]
     
     def get_queryset(self):
         return DC_Cases.objects.all()

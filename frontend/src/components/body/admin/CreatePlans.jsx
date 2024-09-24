@@ -26,7 +26,9 @@ const CreatePlans = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/plans/planmat/', formData);
+            const response = await axios.post('http://127.0.0.1:8000/api/plans/planmat/', formData, {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
+            });
             setPlans(prevPlans => [response.data, ...prevPlans]);
             setFormData({
                 PLAN_NAME: '',
@@ -43,7 +45,9 @@ const CreatePlans = () => {
     const handleUpdateSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`http://127.0.0.1:8000/api/plans/planmat/${editPlan.PLAN_ID}/`, formData);
+            await axios.put(`http://127.0.0.1:8000/api/plans/planmat/${editPlan.PLAN_ID}/`, formData, {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
+            });
             setPlans(prevPlans => prevPlans.map(plan =>
                 plan.PLAN_ID === editPlan.PLAN_ID ? { ...plan, ...formData } : plan
             ));
@@ -62,7 +66,9 @@ const CreatePlans = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this plan?')) {
             try {
-                await axios.delete(`http://127.0.0.1:8000/api/plans/planmat/${id}/`);
+                await axios.delete(`http://127.0.0.1:8000/api/plans/planmat/${id}/`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
+                });
                 setPlans(prevPlans => prevPlans.filter(plan => plan.PLAN_ID !== id));
             } catch (error) {
                 alert('Failed to delete plan. Please try again.');
@@ -73,7 +79,9 @@ const CreatePlans = () => {
     useEffect(() => {
         const fetchPlans = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/plans/planmat/');
+                const response = await axios.get('http://127.0.0.1:8000/api/plans/planmat/', {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
+                });
                 setPlans(response.data);
                 setLoading(false);
             } catch (err) {

@@ -55,9 +55,12 @@ const DetermineEligibility = ({ setSelectedMenu }) => {
             );
 
             // Handle response when it returns an array
+            console.log('caseNum:', caseNum);
+            console.log('response data:', response.status === 200, 'and', response.data, Array.isArray(response.data), 'and', response.data.length > 0)
             if (response.status === 200 && Array.isArray(response.data) && response.data.length > 0) {
                 // Filter to get the records that match the case number
                 const matchingRecords = response.data.filter((record) => record.CASE_NUM === caseNum);
+                console.log('matching records:', matchingRecords);
 
                 // Display the latest record for the current case number
                 if (matchingRecords.length > 0) {

@@ -5,7 +5,7 @@ from django.db import models
 class AppReg(models.Model):
     APP_ID = models.AutoField(primary_key=True)
     FULLNAME = models.CharField(max_length=255)			
-    EMAIL	= models.CharField(max_length=255)			
+    EMAIL	= models.CharField(max_length=255, unique=True)			
     PHNO	= models.BigIntegerField()
     SSN		= models.BigIntegerField(unique=True)			
     GENDER	= models.CharField(max_length=255)

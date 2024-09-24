@@ -25,7 +25,11 @@ const ViewAccounts = () => {
         // Define the async function inside useEffect
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/plans/casewrkacct/');
+                const response = await axios.get('http://127.0.0.1:8000/api/plans/casewrkacct/', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                    },
+                });
                 setAccounts(response.data); // Set the response data to state
 
             } catch (error) {
