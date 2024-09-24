@@ -5,11 +5,13 @@ from rest_framework.response import Response
 from rest_framework import viewsets, filters
 from .models import eligibilityDetermination
 from datacol_api.models import DC_Cases, DC_Income, DC_Childrens, DC_Education
-from .serializers import eligibilitySerializers
+from .serializers import eligibilitySerializers, EligibilityDeterminationSerializer
 from appreg_api.models import AppReg
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import action
 from correspondence_api.models import correspondance_module
+from .filters import EligibilityDeterminationFilter
+from django_filters.rest_framework import DjangoFilterBackend
 import os
 import environ
 
@@ -314,3 +316,11 @@ class HistoryNoticeViewSet(viewsets.ModelViewSet):
     serializer_class = eligibilitySerializers
     filter_backends = [filters.SearchFilter]
     search_fields = ['BENEFIT_AMT', 'CASE_NUM', 'DENIAL_REASON', 'PLAN_END_DATE', 'PLAN_NAME', 'PLAN_START_DATE', 'PLAN_STATUS']  # Specify the fields you want to search
+
+
+class EligibilityFilterViewSet(viewsets.ModelViewSet):
+    queryset = eligibilityDetermination.objects.select_related('EMAIL').all()
+    serializer_class = EligibilityDeterminationSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_class = EligibilityDeterminationFilter
+    search_fields = ['PLAN_NAME', 'PLAN_STATUS', 'EMAIL__GENDER', 'PLAN_START_DATE', 'PLAN_END_DATE']

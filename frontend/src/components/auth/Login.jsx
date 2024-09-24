@@ -18,10 +18,13 @@ const Login = () => {
             const { access, refresh } = response.data;
 
             const redirect_to_unlock = decodeJwt(access).redirect_to_unlock
+            const user_role = decodeJwt(access).user_role
             console.log('redirect:', redirect_to_unlock, 'userid:', decodeJwt(access).user_id)
+            console.log('user_role:', user_role, 'userid:', decodeJwt(access).user_id)
 
             localStorage.setItem('access_token', access);
             localStorage.setItem('refresh_token', refresh);
+            localStorage.setItem('user_role', user_role)
 
             if (redirect_to_unlock) {
                 // Redirect to unlock page if the flag is true

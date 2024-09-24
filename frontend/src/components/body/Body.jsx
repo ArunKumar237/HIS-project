@@ -1,9 +1,9 @@
 import React, { Fragment, useState } from 'react'
 import Sidebar from './Sidebar'
+import Reports from './reports/Reports'
 import CreateAccounts from './admin/CreateAccounts'
 import ViewAccounts from './admin/ViewAccounts'
 import CreatePlans from './admin/CreatePlans'
-import ViewPlans from './admin/ViewPlans'
 import ViewNotices from './correspondence/ViewNotices'
 import PendingNotices from './correspondence/PendingNotices'
 import HistoryNotices from './correspondence/HistoryNotices'
@@ -38,6 +38,8 @@ const Body = () => {
         switch (selectedMenu) {
             case 'dashboard':
                 return <h1>Dashboard Content</h1>;
+            case 'Reports':
+                return <Reports setSelectedMenu={setSelectedMenu} />;
             case 'CreateAccounts':
                 return <CreateAccounts />;
             case 'ViewAccounts':

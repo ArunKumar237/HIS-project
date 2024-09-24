@@ -32,7 +32,22 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
                     token['redirect_to_unlock'] = False
             else:
                 token['redirect_to_unlock'] = False
+            
+            # Get user role and add to token
+            token['user_role'] = cls.get_user_role(user)
+
         except CaseWorkerAcct.DoesNotExist:
             token['redirect_to_unlock'] = False
+            token['user_role'] = cls.get_user_role(user)  # Ensure we still get the role if the caseworker doesn't exist
         
         return token
+    
+    @classmethod
+    def get_user_role(cls, user):
+        # Implement your logic to determine the user's role
+        if user.is_superuser:
+            return 'admin'
+        elif user.is_staff:
+            return 'staff'
+        else:
+            return 'user'
