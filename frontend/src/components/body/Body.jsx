@@ -8,7 +8,6 @@ import ViewNotices from './correspondence/ViewNotices'
 import PendingNotices from './correspondence/PendingNotices'
 import HistoryNotices from './correspondence/HistoryNotices'
 import DetermineEligibility from './determineEligibility/DetermineEligibility'
-import './Body.css'
 import IncomeDetails from './datacollection/IncomeDetails'
 import EducationDetails from './datacollection/EducationDetails'
 import KidsDetails from './datacollection/KidsDetails'
@@ -17,6 +16,8 @@ import CreateApplication from './applicationRegistration/CreateApplication'
 import ViewApplications from './applicationRegistration/ViewApplications'
 import CreatePlanCategory from './admin/CreatePlanCategory'
 import PlanSelection from './datacollection/PlanSelection'
+import './Body.css'
+import Dashboard from './dashboard/Dashboard'
 
 const Body = () => {
     const [selectedMenu, setSelectedMenu] = useState('dashboard');
@@ -36,8 +37,8 @@ const Body = () => {
     const renderContent = () => {
         console.log('selectedMenu:', selectedMenu);
         switch (selectedMenu) {
-            case 'dashboard':
-                return <h1>Dashboard Content</h1>;
+            case 'Dashboard':
+                return <Dashboard />;
             case 'Reports':
                 return <Reports setSelectedMenu={setSelectedMenu} />;
             case 'CreateAccounts':
@@ -73,7 +74,7 @@ const Body = () => {
             case 'PlanSelection':
                 return <PlanSelection setSelectedMenu={setSelectedMenu} setSelectedPlan={setSelectedPlan} selectedPlan={selectedPlan} />
             default:
-                return <h1>Welcome!</h1>;
+                return <Dashboard />;
         }
     };
 

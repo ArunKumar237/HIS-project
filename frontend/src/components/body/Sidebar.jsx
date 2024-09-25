@@ -37,11 +37,11 @@ const Sidebar = ({ onSelectMenu }) => {
                 src: "https://img.icons8.com/ios/30/secured-letter--v1.png",
                 submenu: ["View Notices", "Pending Notices", "History Notices"]
             },
-            {
-                text: "Benefit Issuance",
-                src: "https://img.icons8.com/external-outline-geotatah/30/external-benefit-datanomics-outline-geotatah.png",
-                submenu: []
-            },
+            // {
+            //     text: "Benefit Issuance",
+            //     src: "https://img.icons8.com/external-outline-geotatah/30/external-benefit-datanomics-outline-geotatah.png",
+            //     submenu: []
+            // },
             {
                 text: "Reports",
                 src: "https://img.icons8.com/ios/30/graph-report.png",

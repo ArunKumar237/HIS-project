@@ -12,6 +12,7 @@ from rest_framework.decorators import action
 from correspondence_api.models import correspondance_module
 from .filters import EligibilityDeterminationFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Count, Sum, Min, Max
 import os
 import environ
 
@@ -324,3 +325,39 @@ class EligibilityFilterViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_class = EligibilityDeterminationFilter
     search_fields = ['PLAN_NAME', 'PLAN_STATUS', 'EMAIL__GENDER', 'PLAN_START_DATE', 'PLAN_END_DATE']
+
+
+    @action(detail=False, methods=['get'], url_path='stats')
+    def get_stats(self, request):
+        # Count total plans
+        total_plans = eligibilityDetermination.objects.count()
+
+        # Count approved plans
+        total_approved = eligibilityDetermination.objects.filter(PLAN_STATUS='Approved').count()
+
+        # Count denied plans
+        total_denied = eligibilityDetermination.objects.filter(PLAN_STATUS='Rejected').count()
+
+        # Sum of benefit amounts
+        total_benefit = eligibilityDetermination.objects.aggregate(total_benefit=Sum('BENEFIT_AMT'))['total_benefit'] or 0
+
+        # Get first and last date (PLAN_START_DATE)
+        first_date = eligibilityDetermination.objects.aggregate(first_date=Min('PLAN_START_DATE'))['first_date']
+        last_date = eligibilityDetermination.objects.aggregate(last_date=Max('PLAN_END_DATE'))['last_date']
+        
+        # Format dates to "Month Year" format
+        first_date_formatted = first_date.strftime('%b %Y') if first_date else None
+        last_date_formatted = last_date.strftime('%b %Y') if last_date else None
+
+        # Prepare the response data
+        data = {
+            'total_plans': total_plans,
+            'total_approved': total_approved,
+            'total_denied': total_denied,
+            'total_benefit': total_benefit,
+            'first_date': first_date_formatted,
+            'last_date': last_date_formatted,
+        }
+
+        # Return as a DRF Response
+        return Response(data)

@@ -15,7 +15,7 @@ class DC_Cases(models.Model):
 class DC_Income(models.Model):
     INCOME_ID = models.AutoField(primary_key=True)
     CASE_NUM = models.ForeignKey(AppReg, to_field='CASE_NUM', on_delete=models.CASCADE,null=True,blank=True, unique=True)
-    EMP_INCOME = models.IntegerField(max_length=6)
+    EMP_INCOME = models.IntegerField()
     PROPERTY_INCOME = models.IntegerField()
     class Meta:
         verbose_name = 'Dc_income'

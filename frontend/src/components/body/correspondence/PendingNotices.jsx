@@ -100,7 +100,6 @@ const ViewNotices = () => {
         setSearchTerm(event.target.value);
     };
 
-    // Function to handle sending the notice and updating MAIL_SENT in the backend
     const sendNotice = async (notice) => {
         setLoadingStates((prevState) => ({ ...prevState, [notice.ELIG_ID]: true })); // Set loading state
 
@@ -108,7 +107,11 @@ const ViewNotices = () => {
             const token = localStorage.getItem('access_token');
 
             // (Generate the PDF with content, as you did in the `generatePdfForNotice` function)
-            const pdfBlob = generatePdfForNotice(notice)
+            const pdfBlob = await generatePdfForNotice(notice); // Make sure PDF is generated before continuing
+
+            if (!pdfBlob) {
+                throw new Error("Failed to generate PDF");
+            }
 
             // Create FormData to send the PDF file
             const formData = new FormData();

@@ -3,10 +3,22 @@ import React, { useState, useEffect } from 'react';
 import './UpdateForm.css';
 
 const UpdateForm = ({ appReg, setShowPopup, onUpdate }) => {
-    const [formData, setFormData] = useState(appReg);
+    const [formData, setFormData] = useState({
+        FULLNAME: appReg.FULLNAME,
+        EMAIL: appReg.EMAIL,
+        PHNO: appReg.PHNO,
+        SSN: appReg.SSN,
+        GENDER: appReg.GENDER,
+    });
 
     useEffect(() => {
-        setFormData(appReg);
+        setFormData({
+            FULLNAME: appReg.FULLNAME,
+            EMAIL: appReg.EMAIL,
+            PHNO: appReg.PHNO,
+            SSN: appReg.SSN,
+            GENDER: appReg.GENDER,
+        });
     }, [appReg]);
 
     const handleChange = (e) => {
@@ -16,8 +28,15 @@ const UpdateForm = ({ appReg, setShowPopup, onUpdate }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const dataToUpdate = {
+            FULLNAME: formData.FULLNAME,
+            EMAIL: formData.EMAIL,
+            PHNO: formData.PHNO,
+            SSN: formData.SSN,
+            GENDER: formData.GENDER,
+        };
         try {
-            const response = await axios.patch(`http://127.0.0.1:8000/api/Ar/appRegister/${formData.APP_ID}/`, formData, {
+            const response = await axios.patch(`http://127.0.0.1:8000/api/Ar/appRegister/${appReg.APP_ID}/`, dataToUpdate, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
             });
             onUpdate(response.data);
@@ -57,17 +76,7 @@ const UpdateForm = ({ appReg, setShowPopup, onUpdate }) => {
                             <label>Gender:</label>
                             <input type="text" name="GENDER" value={formData.GENDER} onChange={handleChange} />
                         </div>
-                        {/* <div>
-                            <label>State Name:</label>
-                            <input type="text" name="STATE_NAME" value={formData.STATE_NAME} onChange={handleChange} />
-                        </div> */}
                     </div>
-                    {/* <div>
-                        <div>
-                            <label>Case Number:</label>
-                            <input type="number" name="CASE_NUM" value={formData.CASE_NUM} onChange={handleChange} />
-                        </div>
-                    </div> */}
                     <button type="submit">Update</button>
                     <button type="button" onClick={() => setShowPopup(false)}>Cancel</button>
                 </form>

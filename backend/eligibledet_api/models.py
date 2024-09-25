@@ -14,4 +14,4 @@ class eligibilityDetermination(models.Model):
     BENEFIT_AMT = models.IntegerField(null=True, blank=True)
     DENIAL_REASON = models.CharField(max_length=255, null=True, blank=True)
     MAIL_SENT = models.BooleanField(default=False)
-    EMAIL = models.ForeignKey(AppReg, to_field='EMAIL', on_delete=models.CASCADE, null=True) 
+    EMAIL = models.ForeignKey(AppReg, on_delete=models.CASCADE, null=True) 

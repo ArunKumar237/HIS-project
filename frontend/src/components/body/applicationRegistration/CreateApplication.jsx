@@ -45,9 +45,9 @@ const CreateApplication = () => {
             setSuccess('Successfully submitted');
             setError(null);
         } catch (error) {
-            setError('Failed to submit data. Please try again.');
+            setError(error.response && error.response.data ? `${error.response.data},  So that's why Failed to submit data.` : 'Failed to submit data.');
             setSuccess(null);
-            console.error('Error submitting data:', error);
+            console.error('Error submitting data:', response.message);
         }
     };
 
