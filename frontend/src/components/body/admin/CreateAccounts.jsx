@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import { API_BASE_URL } from '../../../../config';
 
 const CreateAccounts = () => {
     const [error, setError] = useState('');
@@ -17,7 +18,7 @@ const CreateAccounts = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/plans/casewrkacct/', FormData, {
+            const response = await axios.post(`${API_BASE_URL}/api/plans/casewrkacct/`, FormData, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
             });
             setSuccess('Account created successfully!')

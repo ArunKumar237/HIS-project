@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import './ViewApplications.css';
 import UpdateForm from './UpdateForm';
+import { API_BASE_URL } from '../../../../config';
 
 const ViewApplications = ({ onSelectDetail }) => {
     const [appRegs, setAppRegs] = useState([]);
@@ -14,7 +15,7 @@ const ViewApplications = ({ onSelectDetail }) => {
             try {
                 const token = localStorage.getItem('access_token'); // Replace with your actual token
 
-                const response = await axios.get('http://127.0.0.1:8000/api/Ar/appRegister/', {
+                const response = await axios.get(`${API_BASE_URL}/api/Ar/appRegister/`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },
@@ -32,7 +33,7 @@ const ViewApplications = ({ onSelectDetail }) => {
         const isConfirmed = window.confirm(`Are you sure you want to update the record ${appId}?`);
         if (!isConfirmed) return;
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/Ar/appRegister/${appId}/`, {
+            const response = await axios.get(`${API_BASE_URL}/api/Ar/appRegister/${appId}/`, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
             });
             setSelectedAppReg(response.data);
@@ -55,7 +56,7 @@ const ViewApplications = ({ onSelectDetail }) => {
         const isConfirmed = window.confirm(`Are you sure you want to delete record ${appId}?`);
         if (!isConfirmed) return;
         try {
-            await axios.delete(`http://127.0.0.1:8000/api/Ar/appRegister/${appId}/`, {
+            await axios.delete(`${API_BASE_URL}/api/Ar/appRegister/${appId}/`, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
             });
             setAppRegs(prevAppRegs => prevAppRegs.filter(appReg => appReg.APP_ID !== appId));

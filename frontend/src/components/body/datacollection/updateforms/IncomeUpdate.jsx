@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../../../../../config';
 import './IncomeUpdate.css'; // Make sure your CSS file has the necessary styles
 
 const IncomeUpdateForm = ({ selectedTable, setShowPopup, onUpdate }) => {
@@ -23,7 +24,7 @@ const IncomeUpdateForm = ({ selectedTable, setShowPopup, onUpdate }) => {
         try {
             // Update the record via an API call
             const response = await axios.patch(
-                `http://127.0.0.1:8000/api/Dc/Dc_income/${formData.INCOME_ID}/`,
+                `${API_BASE_URL}/api/Dc/Dc_income/${formData.INCOME_ID}/`,
                 formData,
                 {
                     headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` },

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import './UpdateForm.css';
+import { API_BASE_URL } from '../../../../config';
 
 const UpdateForm = ({ appReg, setShowPopup, onUpdate }) => {
     const [formData, setFormData] = useState({
@@ -36,7 +37,7 @@ const UpdateForm = ({ appReg, setShowPopup, onUpdate }) => {
             GENDER: formData.GENDER,
         };
         try {
-            const response = await axios.patch(`http://127.0.0.1:8000/api/Ar/appRegister/${appReg.APP_ID}/`, dataToUpdate, {
+            const response = await axios.patch(`${API_BASE_URL}/api/Ar/appRegister/${appReg.APP_ID}/`, dataToUpdate, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
             });
             onUpdate(response.data);

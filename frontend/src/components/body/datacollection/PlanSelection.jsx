@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../../config';
 
 const PlanSelection = ({ setSelectedMenu, setSelectedPlan }) => {
     const [latestCaseNum, setLatestCaseNum] = useState('');
@@ -14,7 +15,7 @@ const PlanSelection = ({ setSelectedMenu, setSelectedPlan }) => {
         // Define the function to fetch data
         const fetchLatestCaseNumber = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/Dc/get-latest-case-number/');
+                const response = await axios.get(`${API_BASE_URL}/api/Dc/get-latest-case-number/`);
                 setLatestCaseNumber(response.data); // Adjust according to the response structure
                 console.log('setLatestCaseNumber:', response.data);
             } catch (err) {
@@ -32,7 +33,7 @@ const PlanSelection = ({ setSelectedMenu, setSelectedPlan }) => {
                 const token = localStorage.getItem('access_token');
 
                 // Fetch latest case number
-                const caseResponse = await axios.get('http://127.0.0.1:8000/api/Dc/get-latest-case-number/', {
+                const caseResponse = await axios.get(`${API_BASE_URL}/api/Dc/get-latest-case-number/`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -43,7 +44,7 @@ const PlanSelection = ({ setSelectedMenu, setSelectedPlan }) => {
                 }
 
                 // Fetch available plans
-                const plansResponse = await axios.get('http://127.0.0.1:8000/api/Dc/get-plan-names/', {
+                const plansResponse = await axios.get(`${API_BASE_URL}/api/Dc/get-plan-names/`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -75,7 +76,7 @@ const PlanSelection = ({ setSelectedMenu, setSelectedPlan }) => {
         try {
             const token = localStorage.getItem('access_token');
             await axios.patch(
-                `http://127.0.0.1:8000/api/Dc/Dc_cases/${Cases.CASE_ID}/`,
+                `${API_BASE_URL}/api/Dc/Dc_cases/${Cases.CASE_ID}/`,
                 {
                     PLAN_NAME: selectedPlanId,
                 },

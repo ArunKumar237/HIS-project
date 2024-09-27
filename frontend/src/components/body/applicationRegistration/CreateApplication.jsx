@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../../config';
 
 const CreateApplication = () => {
     const [formData, setFormData] = useState({
@@ -27,7 +28,7 @@ const CreateApplication = () => {
         try {
             const token = localStorage.getItem('access_token');
             // Post the form data to the API endpoint
-            const response = await axios.post('http://127.0.0.1:8000/api/Ar/appRegister/', formData, {
+            const response = await axios.post(`${API_BASE_URL}/api/Ar/appRegister/`, formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

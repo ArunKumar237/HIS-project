@@ -3,6 +3,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable'; // Import for table support
 import axios from 'axios';
 import './ViewNotices.css';
+import { API_BASE_URL } from '../../../../config';
 
 const ViewNotices = () => {
     const [loadingStates, setLoadingStates] = useState({}); // Track loading state for each notice
@@ -79,7 +80,7 @@ const ViewNotices = () => {
     const fetchNotices = async (search = '') => {
         try {
             const token = localStorage.getItem('access_token');
-            const response = await axios.get(`http://127.0.0.1:8000/api/eligible/searchNotice/?search=${search}`, {
+            const response = await axios.get(`${API_BASE_URL}/api/eligible/searchNotice/?search=${search}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

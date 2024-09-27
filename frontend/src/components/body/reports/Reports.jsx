@@ -3,6 +3,7 @@ import axios from 'axios';
 import * as XLSX from 'xlsx'; // For Excel download
 import jsPDF from 'jspdf'; // For PDF download
 import 'jspdf-autotable'; // For table in PDF
+import { API_BASE_URL } from '../../../../config';
 
 const Reports = () => {
     // State for filter inputs
@@ -23,7 +24,7 @@ const Reports = () => {
         const fetchAllData = async () => {
             try {
                 const token = localStorage.getItem('access_token'); // Assuming you're using JWT for authentication
-                const response = await axios.get('http://127.0.0.1:8000/api/eligible/eligibilityFilter/', {
+                const response = await axios.get(`${API_BASE_URL}/api/eligible/eligibilityFilter/`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -52,7 +53,7 @@ const Reports = () => {
         console.log("params:", params)
         try {
             const token = localStorage.getItem('access_token'); // Assuming you're using JWT for authentication
-            const response = await axios.get('http://127.0.0.1:8000/api/eligible/eligibilityFilter/', {
+            const response = await axios.get(`${API_BASE_URL}/api/eligible/eligibilityFilter/`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

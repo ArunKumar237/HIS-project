@@ -3,6 +3,7 @@ import axios from 'axios';
 import IncomeUpdate from './updateforms/IncomeUpdate';
 import KidsUpdate from './updateforms/KidsUpdate';
 import EducationUpdate from './updateforms/EducationUpdate';
+import { API_BASE_URL } from '../../../../config';
 
 const SummaryScreen = ({ setSelectedMenu }) => {
     const [cases, setCases] = useState([]);
@@ -22,16 +23,16 @@ const SummaryScreen = ({ setSelectedMenu }) => {
             const token = localStorage.getItem('access_token');
 
             const [casesRes, incomeRes, kidsRes, educationRes] = await Promise.all([
-                axios.get('http://127.0.0.1:8000/api/Dc/Dc_cases/', {
+                axios.get(`${API_BASE_URL}/api/Dc/Dc_cases/`, {
                     headers: { Authorization: `Bearer ${token}` },
                 }),
-                axios.get('http://127.0.0.1:8000/api/Dc/Dc_income/', {
+                axios.get(`${API_BASE_URL}/api/Dc/Dc_income/`, {
                     headers: { Authorization: `Bearer ${token}` },
                 }),
-                axios.get('http://127.0.0.1:8000/api/Dc/Dc_children/', {
+                axios.get(`${API_BASE_URL}/api/Dc/Dc_children/`, {
                     headers: { Authorization: `Bearer ${token}` },
                 }),
-                axios.get('http://127.0.0.1:8000/api/Dc/Dc_education/', {
+                axios.get(`${API_BASE_URL}/api/Dc/Dc_education/`, {
                     headers: { Authorization: `Bearer ${token}` },
                 }),
             ]);
@@ -72,7 +73,7 @@ const SummaryScreen = ({ setSelectedMenu }) => {
         if (!isConfirmed) return;
 
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/Dc/${table}/${id}/`, {
+            const response = await axios.get(`${API_BASE_URL}/api/Dc/${table}/${id}/`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` },
             });
             setSelectedTable(response.data);
@@ -90,7 +91,7 @@ const SummaryScreen = ({ setSelectedMenu }) => {
         if (!isConfirmed) return;
 
         try {
-            await axios.delete(`http://127.0.0.1:8000/api/Dc/${table}/${id}/`, {
+            await axios.delete(`${API_BASE_URL}/api/Dc/${table}/${id}/`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` },
             });
             fetchData(); // Refresh the data after deletion
