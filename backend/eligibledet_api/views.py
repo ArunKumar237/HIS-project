@@ -266,20 +266,22 @@ class PendingNoticeViewSet(viewsets.ModelViewSet):
                 f"Please find attached the notice for your insurance plan: {notice.PLAN_NAME}.\n\n"
                 f"Best regards,\nInsurance Team"
             )
-            to_email = notice.EMAIL.EMAIL
+            to_email = notice.EMAIL
+            print('to_email:', to_email)
 
-            pdf_file.seek(0)
             # Create the email message
             email = EmailMessage(subject, body, env('EMAIL_HOST_USER'), [to_email])
 
-            # Attach the PDF
+            pdf_file.seek(0)
             email.attach(pdf_file.name, pdf_file.read(), pdf_file.content_type)
 
             # Send the email
             email.send(fail_silently=False)
             print("Email sent successfully.")
+            return True  # Indicate success
         except Exception as e:
             print(f"Failed to send email: {str(e)}")
+            return False  # Indicate failure
 
     @action(detail=True, methods=['post'])
     def send_notice(self, request, *args, **kwargs):
@@ -297,20 +299,24 @@ class PendingNoticeViewSet(viewsets.ModelViewSet):
         if not pdf_file or pdf_file.size == 0:
             return Response({'error': 'PDF file not provided'}, status=status.HTTP_400_BAD_REQUEST)
 
+        pdf_content = pdf_file.read()
         # Save the PDF to the correspondance_module
         correspondance_record = correspondance_module.objects.create(
             CASE_NUM=notice.CASE_NUM,
-            NOTICE=pdf_file  # Assuming NOTICE_FILE is the field for storing the PDF
+            NOTICE=pdf_content  # Assuming NOTICE_FILE is the field for storing the PDF
         )
 
         # Send the email with the PDF
-        self.send_email_to_citizen(notice, pdf_file)
+        email_sent = self.send_email_to_citizen(notice, pdf_file)
 
-        # Update the MAIL_SENT status
-        notice.MAIL_SENT = True
-        notice.save()
-
-        return Response({"message": "Mail sent successfully."}, status=status.HTTP_201_CREATED)
+        # Check if email was sent successfully
+        if email_sent:
+            # Update the MAIL_SENT status
+            notice.MAIL_SENT = True
+            notice.save()
+            return Response({"message": "Mail sent successfully."}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "Failed to send email."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class HistoryNoticeViewSet(viewsets.ModelViewSet):
     queryset = eligibilityDetermination.objects.filter(MAIL_SENT=True)
@@ -320,11 +326,12 @@ class HistoryNoticeViewSet(viewsets.ModelViewSet):
 
 
 class EligibilityFilterViewSet(viewsets.ModelViewSet):
-    queryset = eligibilityDetermination.objects.select_related('EMAIL').all()
+    queryset = eligibilityDetermination.objects.all()
     serializer_class = EligibilityDeterminationSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_class = EligibilityDeterminationFilter
-    search_fields = ['PLAN_NAME', 'PLAN_STATUS', 'EMAIL__GENDER', 'PLAN_START_DATE', 'PLAN_END_DATE']
+    search_fields = ['PLAN_NAME', 'PLAN_STATUS', 'app_reg__GENDER', 'PLAN_START_DATE', 'PLAN_END_DATE']
+
 
 
     @action(detail=False, methods=['get'], url_path='stats')

@@ -12,18 +12,21 @@ class eligibilitySerializers(serializers.ModelSerializer):
             'PLAN_START_DATE', 
             'PLAN_END_DATE', 
             'BENEFIT_AMT', 
-            'DENIAL_REASON'
+            'DENIAL_REASON',
+            'EMAIL'
         ]
         read_only_fields = ['ELIG_ID']  # ELIG_ID is auto-generated, so it should be read-only
 
 class EligibilityDeterminationSerializer(serializers.ModelSerializer):
     # Access related AppReg fields
-    FULLNAME = serializers.CharField(source='EMAIL.FULLNAME')
-    EMAIL = serializers.CharField(source='EMAIL.EMAIL')
-    PHNO = serializers.IntegerField(source='EMAIL.PHNO')
-    GENDER = serializers.CharField(source='EMAIL.GENDER')
-    SSN = serializers.IntegerField(source='EMAIL.SSN')
+    FULLNAME = serializers.CharField(source='app_reg.FULLNAME')
+    EMAIL = serializers.CharField(source='app_reg.EMAIL')
+    PHNO = serializers.IntegerField(source='app_reg.PHNO')
+    GENDER = serializers.CharField(source='app_reg.GENDER')
+    SSN = serializers.IntegerField(source='app_reg.SSN')
 
     class Meta:
         model = eligibilityDetermination
-        fields = ['ELIG_ID', 'FULLNAME', 'EMAIL', 'PHNO', 'GENDER', 'SSN', 'PLAN_NAME', 'PLAN_STATUS', 'PLAN_START_DATE', 'PLAN_END_DATE']
+        fields = ['ELIG_ID', 'FULLNAME', 'EMAIL', 'PHNO', 'GENDER', 'SSN', 
+                  'PLAN_NAME', 'PLAN_STATUS', 'PLAN_START_DATE', 'PLAN_END_DATE']
+
