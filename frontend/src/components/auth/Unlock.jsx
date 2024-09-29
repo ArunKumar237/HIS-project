@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Heading from './Heading';
+import { API_BASE_URL } from '../../../config';
 
 const Unlock = () => {
     const navigate = useNavigate();
@@ -35,7 +36,7 @@ const Unlock = () => {
         console.log('---->', username, password, new_password, token)
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/user/unlock-account/', {
+            const response = await axios.post(`${API_BASE_URL}/api/user/unlock-account/`, {
                 username,
                 password,
                 new_password

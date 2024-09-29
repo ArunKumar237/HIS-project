@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../../config';
 
 const EducationDetails = ({ setSelectedMenu, selectedPlan }) => {
     const [caseNum, setCaseNum] = useState('');
@@ -16,7 +17,7 @@ const EducationDetails = ({ setSelectedMenu, selectedPlan }) => {
                 const token = localStorage.getItem('access_token');
 
                 // Fetch the latest case number
-                const caseResponse = await axios.get('http://127.0.0.1:8000/api/Dc/get-latest-case-number/', {
+                const caseResponse = await axios.get(`${API_BASE_URL}/api/Dc/get-latest-case-number/`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     }
@@ -59,7 +60,7 @@ const EducationDetails = ({ setSelectedMenu, selectedPlan }) => {
             };
 
             // Post data to the server
-            const response = await axios.post('http://127.0.0.1:8000/api/Dc/Dc_education/', data, {
+            const response = await axios.post(`${API_BASE_URL}/api/Dc/Dc_education/`, data, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',

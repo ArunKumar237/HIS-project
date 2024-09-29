@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../../config';
 
 const UpdateForm = ({ setShowPopup, worker, onUpdate }) => {
     const [error, setError] = useState(null)
@@ -26,7 +27,7 @@ const UpdateForm = ({ setShowPopup, worker, onUpdate }) => {
     const handleUpdateFormSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`http://127.0.0.1:8000/api/plans/casewrkacct/${worker.ACC_ID}/`, formData, {
+            const response = await axios.put(`${API_BASE_URL}/api/plans/casewrkacct/${worker.ACC_ID}/`, formData, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
             });
 

@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import './ViewAccounts.css'
 import UpdateForm from './UpdateForm';
+import { API_BASE_URL } from '../../../../config';
 
 const ViewAccounts = () => {
     const [Accounts, setAccounts] = useState('');
@@ -25,7 +26,7 @@ const ViewAccounts = () => {
         // Define the async function inside useEffect
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/plans/casewrkacct/', {
+                const response = await axios.get(`${API_BASE_URL}/api/plans/casewrkacct/`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
                     },
@@ -44,7 +45,7 @@ const ViewAccounts = () => {
         const isConfirmed = window.confirm(`Are you sure you want ${isActive ? 'De-Activate' : 'Activate'} account ${accountId}?`);
         if (!isConfirmed) return;
         try {
-            const response = await axios.patch(`http://127.0.0.1:8000/api/plans/casewrkacct/${accountId}/`, { ACTIVE_SW: !isActive }, {
+            const response = await axios.patch(`${API_BASE_URL}/api/plans/casewrkacct/${accountId}/`, { ACTIVE_SW: !isActive }, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
             });
 
@@ -74,7 +75,7 @@ const ViewAccounts = () => {
         const isConfirmed = window.confirm(`Are you sure you want to delete account ${accountId}?`);
         if (!isConfirmed) return;
         try {
-            const response = await axios.delete(`http://127.0.0.1:8000/api/plans/casewrkacct/${accountId}/`, {
+            const response = await axios.delete(`${API_BASE_URL}/api/plans/casewrkacct/${accountId}/`, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
             });
 
@@ -92,7 +93,7 @@ const ViewAccounts = () => {
         const isConfirmed = window.confirm(`Are you sure you want to update account ${accountId}?`);
         if (!isConfirmed) return;
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/plans/casewrkacct/${accountId}/`, {
+            const response = await axios.get(`${API_BASE_URL}/api/plans/casewrkacct/${accountId}/`, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
             });
             setWorker(response.data)

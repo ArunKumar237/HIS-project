@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../../config';
 
 const DetermineEligibility = ({ setSelectedMenu }) => {
     const [caseNum, setCaseNum] = useState('');
@@ -16,7 +17,7 @@ const DetermineEligibility = ({ setSelectedMenu }) => {
 
                 // Fetch the latest case number
                 const caseResponse = await axios.get(
-                    'http://127.0.0.1:8000/api/Dc/get-latest-case-number/',
+                    `${API_BASE_URL}/api/Dc/get-latest-case-number/`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -46,7 +47,7 @@ const DetermineEligibility = ({ setSelectedMenu }) => {
 
             // Fetch data related to the latest case number
             const response = await axios.get(
-                `http://127.0.0.1:8000/api/eligible/eligibility/`,
+                `${API_BASE_URL}/api/eligible/eligibility/`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -87,7 +88,7 @@ const DetermineEligibility = ({ setSelectedMenu }) => {
 
             // Send a POST request to trigger eligibility check
             const response = await axios.post(
-                'http://127.0.0.1:8000/api/eligible/eligibility/',
+                `${API_BASE_URL}/api/eligible/eligibility/`,
                 {},
                 {
                     headers: {

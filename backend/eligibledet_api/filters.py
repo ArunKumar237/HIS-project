@@ -3,11 +3,11 @@ from django_filters import rest_framework as filters
 from .models import eligibilityDetermination
 
 class EligibilityDeterminationFilter(filters.FilterSet):
-    PLAN_NAME = filters.CharFilter(field_name='PLAN_NAME', lookup_expr='icontains')
-    PLAN_STATUS = filters.CharFilter(field_name='PLAN_STATUS', lookup_expr='icontains')
-    GENDER = filters.CharFilter(field_name='EMAIL__GENDER', lookup_expr='iexact')
-    PLAN_START_DATE = filters.DateFilter(field_name='PLAN_START_DATE', lookup_expr='gte')
-    PLAN_END_DATE = filters.DateFilter(field_name='PLAN_END_DATE', lookup_expr='lte')
+    GENDER = filters.CharFilter(field_name='app_reg__GENDER')
+    PLAN_START_DATE = filters.DateFilter(field_name='PLAN_START_DATE', lookup_expr='gte', label='Plan Start Date')
+    PLAN_END_DATE = filters.DateFilter(field_name='PLAN_END_DATE', lookup_expr='lte', label='Plan End Date')
+    
+
 
     class Meta:
         model = eligibilityDetermination

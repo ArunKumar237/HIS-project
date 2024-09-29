@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './Dashborad.css'
 import axios from 'axios';
+import { API_BASE_URL } from '../../../../config';
 
 const Dashboard = () => {
     // State to hold the API data
@@ -17,7 +18,7 @@ const Dashboard = () => {
         const fetchData = async () => {
             try {
                 // Replace with your API endpoint
-                const response = await axios.get('http://127.0.0.1:8000/api/eligible/eligibilityFilter/stats', {
+                const response = await axios.get(`${API_BASE_URL}/api/eligible/eligibilityFilter/stats`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
                     }

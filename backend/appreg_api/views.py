@@ -39,7 +39,7 @@ class AppReg_CRUD(viewsets.ModelViewSet):
         else:
             send_mail(
                 'Status of your Insurance Application',
-                f'HI {data.get('FULLNAME')}!,\n Your application is REJECTED because you are not a citizen of New York as per your SSN number.',
+                f"HI {data.get('FULLNAME')}!,\n Your application is REJECTED because you are not a citizen of New York as per your SSN number.",
                 env('EMAIL_HOST_USER'), #from
                 [data.get('EMAIL')], #to
                 fail_silently=False,

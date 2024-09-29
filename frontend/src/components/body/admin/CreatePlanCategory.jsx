@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './CreatePlanCategory.css'
+import { API_BASE_URL } from '../../../../config';
 
 const CreatePlanCategory = () => {
     const [categories, setCategories] = useState([])
@@ -27,7 +28,7 @@ const CreatePlanCategory = () => {
         setError(null);
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/plans/plancat/', formData, {
+            const response = await axios.post(`${API_BASE_URL}/api/plans/plancat/`, formData, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
             });
             console.log('Category successfully created:', response.data);
@@ -57,7 +58,7 @@ const CreatePlanCategory = () => {
         setError(null);
 
         try {
-            await axios.put(`http://127.0.0.1:8000/api/plans/plancat/${editCategory.CATEGORY_ID}/`, formData, {
+            await axios.put(`${API_BASE_URL}/api/plans/plancat/${editCategory.CATEGORY_ID}/`, formData, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
             });
             console.log('Category successfully updated:', formData);
@@ -79,7 +80,7 @@ const CreatePlanCategory = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this category?')) {
             try {
-                await axios.delete(`http://127.0.0.1:8000/api/plans/plancat/${id}/`, {
+                await axios.delete(`${API_BASE_URL}/api/plans/plancat/${id}/`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
                     },
@@ -97,7 +98,7 @@ const CreatePlanCategory = () => {
         // Fetch data from the API
         const fetchCategories = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/plans/plancat/', {
+                const response = await axios.get(`${API_BASE_URL}/api/plans/plancat/`, {
                     headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
                 });
                 setCategories(response.data);  // Set the fetched data to state

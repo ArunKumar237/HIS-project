@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../../../config';
 
 const KidsUpdate = ({ selectedTable, setShowPopup, onUpdate }) => {
     const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ const KidsUpdate = ({ selectedTable, setShowPopup, onUpdate }) => {
         e.preventDefault();
         try {
             const response = await axios.patch(
-                `http://127.0.0.1:8000/api/Dc/Dc_children/${selectedTable.CHILDREN_ID}/`,
+                `${API_BASE_URL}/api/Dc/Dc_children/${selectedTable.CHILDREN_ID}/`,
                 formData,
                 {
                     headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` },

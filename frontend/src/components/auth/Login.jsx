@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { decodeJwt } from 'jose';
 import Heading from './Heading';
+import { API_BASE_URL } from '../../../config';
 
 
 // Usage in a component
@@ -14,7 +15,7 @@ const Login = () => {
 
     const loginUser = async (username, password) => {
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/token/', username, password);
+            const response = await axios.post(`${API_BASE_URL}/api/token/`, username, password);
             const { access, refresh } = response.data;
 
             const redirect_to_unlock = decodeJwt(access).redirect_to_unlock

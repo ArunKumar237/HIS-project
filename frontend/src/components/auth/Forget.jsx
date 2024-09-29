@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios'
 import Heading from './Heading';
+import { API_BASE_URL } from '../../../config';
 
 const Forget = () => {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ const Forget = () => {
         const { email } = formData;
         console.log('email:', email)
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/user/change-password/', { email }, { headers: { 'Content-Type': 'application/json' } });
+            const response = await axios.post(`${API_BASE_URL}/api/user/change-password/`, { email }, { headers: { 'Content-Type': 'application/json' } });
             setMessage('Form submitted successfully, reset password sent to your registered mail');
         } catch (error) {
             if (error.response) {

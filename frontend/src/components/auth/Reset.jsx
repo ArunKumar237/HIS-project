@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Heading from './Heading';
+import { API_BASE_URL } from '../../../config';
 
 const useQuery = () => {
     return new URLSearchParams(useLocation().search);
@@ -25,7 +26,7 @@ const Reset = () => {
             return;
         }
 
-        axios.post('http://127.0.0.1:8000/api/user/reset-password/', { password: newPassword }, { params: { token: token, uid: uid } })
+        axios.post(`${API_BASE_URL}/api/user/reset-password/`, { password: newPassword }, { params: { token: token, uid: uid } })
             .then(response => {
                 setSuccess('Password has been reset successfully!');
                 navigate('/'); // Redirect to login page
