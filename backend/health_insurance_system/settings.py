@@ -173,7 +173,7 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Replace with your frontend URL
     "http://127.0.0.1:5173",  # Another common localhost URL
-    "https://his-project-git-main-arunkumar237s-projects.vercel.app/",
+    "https://his-project-git-main-arunkumar237s-projects.vercel.app",
     "https://his-project-eight.vercel.app",
 ]
 
