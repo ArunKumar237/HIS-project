@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-4h#1s6u7w8my1dx_-i33)i2jm&yk8@qq-jw3jijh9m@1*26ir9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://his-project-mxslvsisd-arunkumar237s-projects.vercel.app/']
+ALLOWED_HOSTS = ['his-project-mxslvsisd-arunkumar237s-projects.vercel.app', 'arun237.pythonanywhere.com']
 
 
 # Application definition
@@ -173,7 +173,8 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Replace with your frontend URL
     "http://127.0.0.1:5173",  # Another common localhost URL
-    "https://his-project-git-main-arunkumar237s-projects.vercel.app/",
+    # "https://his-project-git-main-arunkumar237s-projects.vercel.app",
+    "his-project-eight.vercel.app",
 ]
 
 # Allow credentials (e.g., cookies, authorization headers)
